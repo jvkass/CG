@@ -9,18 +9,33 @@
 
 using namespace std;
 
-class Vector3{//nome da classe
+class Vector3{
 
-public://parte do codigo onde ficam as variaveis e metodos publicos
-	int vetor[3];
-	 Vector3(int x,int y,int z){//construtor
+public:
+	double vetor[3];
+	
+	Vector3()
+	{
+		vetor[0] = 0;
+		vetor[1] = 0;
+		vetor[2] = 0;
+	}
+
+	
+	 Vector3(double x,double y,double z)
+	 {
 		vetor[0]=x;
 		vetor[1]=y;
 		vetor[2]=z;
 	}
 
+	double* operator[](int id)
+	{
+		return &vetor[id];
+	}
+	
 
-	 virtual std::ostream& dump(std::ostream& o)const{//metodo toString para printar a classe mais naturalmente
+	 virtual std::ostream& dump(std::ostream& o)const{
 		 string resp;
 
 		 return o<<"| "<<vetor[0]<<" |"<<"\n"
@@ -31,26 +46,26 @@ public://parte do codigo onde ficam as variaveis e metodos publicos
 
 
 	 Vector3 Soma(Vector3 v){
-		int X=this->vetor[0]+v.vetor[0];
-		int Y=this->vetor[1]+v.vetor[1];
-		int Z=this->vetor[2]+v.vetor[2];
+		double X=this->vetor[0]+v.vetor[0];
+		double Y=this->vetor[1]+v.vetor[1];
+		double Z=this->vetor[2]+v.vetor[2];
 		Vector3 resp(X,Y,Z);
 
 		 return resp;
 	 }
 
 	 Vector3 Subtracao(Vector3 v){
-		 int X=this->vetor[0]-v.vetor[0];
-		 int Y=this->vetor[1]-v.vetor[1];
-		 int Z=this->vetor[2]-v.vetor[2];
+		 double X=this->vetor[0]-v.vetor[0];
+		 double Y=this->vetor[1]-v.vetor[1];
+		 double Z=this->vetor[2]-v.vetor[2];
 
 		 Vector3 resp(X,Y,Z);
 
 		 return resp;
 	 }
 
-	 int ProdutoEscalar(Vector3 v){
-		 int resp=vetor[0]*v.vetor[0] +
+	 double ProdutoEscalar(Vector3 v){
+		 double resp=vetor[0]*v.vetor[0] +
 				  vetor[1]*v.vetor[1] +
 			      vetor[2]*v.vetor[2];
 		 	 return resp;
@@ -58,9 +73,9 @@ public://parte do codigo onde ficam as variaveis e metodos publicos
 
 
 	 Vector3 ProdutoVetorial(Vector3 v){
-		 int I=(vetor[1]*v.vetor[2]) - (vetor[2]*v.vetor[1]);
-		 int J=(vetor[2]*v.vetor[0]) - (vetor[0]*v.vetor[2]);
-		 int K=(vetor[0]*v.vetor[1]) - (vetor[1]*v.vetor[0]);
+		 double I=(vetor[1]*v.vetor[2]) - (vetor[2]*v.vetor[1]);
+		 double J=(vetor[2]*v.vetor[0]) - (vetor[0]*v.vetor[2]);
+		 double K=(vetor[0]*v.vetor[1]) - (vetor[1]*v.vetor[0]);
 
 		 Vector3 resp(I,J,K);
 		 return resp;

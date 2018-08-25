@@ -11,13 +11,13 @@
 
 #include <GL/glut.h>
 
+
 #include "Vector3.cpp"
-
-
 using namespace std;
-
 std::ostream& operator<<(std::ostream& o, Vector3 b){return b.dump(o);}
 //continuaçao do toString
+
+#include "Mesh.cpp"
 
 
 GLdouble windowWidth  = 800.0;
@@ -26,16 +26,25 @@ GLdouble windowHeight = 600.0;
 int window;
 
 
+Mesh meshTeste;
+
 // Callback do GLUT: Loop de display
 void _Display(void)
 {
 	// Teste com uma linha
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glBegin(GL_LINES);
+	glBegin(GL_TRIANGLES);
 	
-	glVertex2f(0.25 * windowWidth,0.75 * windowHeight);
-	glVertex2f(0.75 * windowWidth,0.25 * windowHeight);
+	for(int i = 0; i < meshTeste.faces.size(); ++i)
+	{
+		for(int j = 0; j < 3; ++j)
+		{
+			glVertex3d(*meshTeste.vertices[meshTeste.faces[i][j][0] - 1][0] * 1,
+					*meshTeste.vertices[meshTeste.faces[i][j][0] - 1][1] * 1,
+						*meshTeste.vertices[meshTeste.faces[i][j][0] - 1][2]);
+		}
+	}
 	
 	glEnd();
 	glFlush();
@@ -65,12 +74,16 @@ void _Teclado(unsigned char key, int x, int y)
 
 int main(int argc, char *argv[])
 {
-	Vector3 teste(0,0,0);
+	// Teste Vector3
+	/*Vector3 teste(0,0,0);
 	Vector3 teste2(10,1,1);
-	teste=teste.Soma(teste2);
-	cout<<teste<<endl;
-	teste=teste.Subtracao(teste);
-	cout<<teste<<endl;
+	teste = teste . Soma(teste2);
+	cout << teste << endl;
+	teste = teste . Subtracao(teste);
+	cout << teste << endl;*/
+	
+	// Test load Obj
+	meshTeste = LoadObj("cube.obj");
 
 	// Inicialização do GLUT e janela
 	glutInit(&argc, argv);
@@ -83,7 +96,10 @@ int main(int argc, char *argv[])
 	glViewport(0, 0, (GLsizei) windowWidth, (GLsizei) windowHeight);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0.0, windowWidth, 0.0, windowHeight, -1.f, 1.f);
+	gluPerspective(45.0, windowWidth/windowHeight, 0, 10);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(2.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	// Definição de callbacks
 	glutReshapeFunc(_Redimensionar);
@@ -94,6 +110,9 @@ int main(int argc, char *argv[])
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glColor3f(0.0, 0.0, 0.0);
 	glLineWidth(3.0);
+	
+	// Habilita render de wireframes
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE );
 
 
 	glutMainLoop();
