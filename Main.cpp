@@ -1,9 +1,3 @@
-/*
- * Main.cpp
- *
- *  Created on: 21 de ago de 2018
- *      Author: joao
- */
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,8 +47,17 @@ void _Display(void)
 // Callback do GLUT: Chamado na criação da janela e toda vez que ela for redimensionada
 void _Redimensionar(int w, int h)
 {
-	// Redimensionamento bloqueado
-	glutReshapeWindow(windowWidth, windowHeight);
+	windowWidth = w;
+	windowHeight = h;
+	
+	// Redefinição do viewport e projeção
+	glViewport(0, 0, (GLsizei) windowWidth, (GLsizei) windowHeight);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0, windowWidth/windowHeight, 0, 10);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(2.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 // Callback do GLUT: Eventos de teclado
@@ -91,15 +94,6 @@ int main(int argc, char *argv[])
 	glutInitWindowSize((int) windowWidth, (int) windowHeight);
 	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)- windowWidth)/2, (glutGet(GLUT_SCREEN_HEIGHT)- windowHeight)/2);
 	window = glutCreateWindow("CG");
-	
-	// Inicialização do viewport e projeção
-	glViewport(0, 0, (GLsizei) windowWidth, (GLsizei) windowHeight);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45.0, windowWidth/windowHeight, 0, 10);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(2.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 	// Definição de callbacks
 	glutReshapeFunc(_Redimensionar);
@@ -112,7 +106,7 @@ int main(int argc, char *argv[])
 	glLineWidth(3.0);
 	
 	// Habilita render de wireframes
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE );
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 	glutMainLoop();
