@@ -15,6 +15,7 @@ using namespace std;
 
 
 #include "Vector3.cpp"
+#include "Vector4.cpp"
 #include "Mesh.cpp"
 
 
