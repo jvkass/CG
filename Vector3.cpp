@@ -1,85 +1,143 @@
-/*
- * Main.cpp
- *
- *  Created on: 22 de ago de 2018
- *      Author: glairton
- */
-#include <iostream>
-#include <string>
+#define Vector3_UP		Vector3(0, 1, 0)
+#define Vector3_DOWN	Vector3(0,-1, 0)
+#define Vector3_LEFT	Vector3(-1, 0, 0)
+#define Vector3_RIGHT	Vector3(1, 0, 0)
+#define Vector3_FORWARD	Vector3(0, 0, 1)
+#define Vector3_BACK	Vector3(0, 0, -1)
+#define Vector3_ONE		Vector3(1, 1, 1)
+#define Vector3_ZERO	Vector3(0, 0, 0)
 
-using namespace std;
+#define RADIANOS_PARA_GRAUS 180 / 3.141592653589793238463
 
-class Vector3{
+struct Vector3
+{	
+	double x;
+	double y;
+	double z;
 
-public:
-	double vetor[3];
-	
 	Vector3()
 	{
-		vetor[0] = 0;
-		vetor[1] = 0;
-		vetor[2] = 0;
+		x = 0;
+		y = 0;
+		z = 0;
 	}
 
-	
-	 Vector3(double x,double y,double z)
-	 {
-		vetor[0]=x;
-		vetor[1]=y;
-		vetor[2]=z;
+	Vector3(double x_, double y_, double z_)
+	{
+		x = x_;
+		y = y_;
+		z = z_;
 	}
 
 	double* operator[](int id)
 	{
-		return &vetor[id];
+		switch(id)
+		{
+			case 0:
+				return &x;
+			case 1:
+				return &y;
+			case 2:
+				return &z;
+		}
 	}
 	
+	Vector3& operator=(Vector3& v)
+	{
+		if(this != &v)
+		{
+			x = v.x;
+			y = v.y;
+			z = v.z;
+		}
+	}
+	
+	Vector3 operator+(Vector3& v)
+	{
+		return Vector3(x + v.x, y + v.y, z + v.z);
+	}
+	
+	Vector3 operator-(Vector3& v)
+	{
+		return Vector3(x - v.x, y - v.y, z - v.z);
+	}
+	
+	Vector3 operator*(double d)
+	{
+		return Vector3(x * d, y * d, z * d);
+	}
+	
+	Vector3 operator/(double d)
+	{
+		return Vector3(x / d, y / d, z / d);
+	}
+	
+	bool operator==(Vector3& v)
+	{
+		if((*this - v).MagnitudeSquared() < 9.99999944E-11f)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	bool operator!=(Vector3& v)
+	{
+		if((*this - v).MagnitudeSquared() < 9.99999944E-11f)
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
+	double Magnitude()
+	{
+		return sqrt((x * x) + (y * y) + (z * z));
+	}
+	
+	double MagnitudeSquared()
+	{
+		return (x * x) + (y * y) + (z * z);
+	}
+	
+	Vector3 Normalize()
+	{
+		double mag = this->Magnitude();
+		
+		return Vector3(x / mag, y / mag, z / mag);
+	}
 
-	 virtual std::ostream& dump(std::ostream& o)const{
-		 string resp;
+	double Dot(Vector3& v)
+	{
+		return x * v.x + y * v.y + z * v.z;
+	}
+	
+	Vector3 Cross(Vector3& v)
+	{
+		return Vector3((y * v.z) - (z * v.y),
+						(z * v.x) - (x * v.z),
+						(x * v.y) - (y * v.x));
+	}
+	
+	double Angle(Vector3& v)
+	{
+		return acos(this->Dot(v) / (this->Magnitude() * v.Magnitude())) * RADIANOS_PARA_GRAUS;
+	}
+	
+	Vector3 Reflect(Vector3* plano)
+	{
+		Vector3 normal = (plano[1] - plano[0]).Cross(plano[2] - plano[0]).Normalize();
 
-		 return o<<"| "<<vetor[0]<<" |"<<"\n"
-				 <<"| "<<vetor[1]<<" |"<<"\n"
-				 <<"| "<<vetor[2]<<" |"<<"\n";
-	 }
-
-
-
-	 Vector3 Soma(Vector3 v){
-		double X=this->vetor[0]+v.vetor[0];
-		double Y=this->vetor[1]+v.vetor[1];
-		double Z=this->vetor[2]+v.vetor[2];
-		Vector3 resp(X,Y,Z);
-
-		 return resp;
-	 }
-
-	 Vector3 Subtracao(Vector3 v){
-		 double X=this->vetor[0]-v.vetor[0];
-		 double Y=this->vetor[1]-v.vetor[1];
-		 double Z=this->vetor[2]-v.vetor[2];
-
-		 Vector3 resp(X,Y,Z);
-
-		 return resp;
-	 }
-
-	 double ProdutoEscalar(Vector3 v){
-		 double resp=vetor[0]*v.vetor[0] +
-				  vetor[1]*v.vetor[1] +
-			      vetor[2]*v.vetor[2];
-		 	 return resp;
-	 }
-
-
-	 Vector3 ProdutoVetorial(Vector3 v){
-		 double I=(vetor[1]*v.vetor[2]) - (vetor[2]*v.vetor[1]);
-		 double J=(vetor[2]*v.vetor[0]) - (vetor[0]*v.vetor[2]);
-		 double K=(vetor[0]*v.vetor[1]) - (vetor[1]*v.vetor[0]);
-
-		 Vector3 resp(I,J,K);
-		 return resp;
-	 }
-
-
+		return *this - normal * (2.0f * this->Dot(normal));
+	}
+	
+	string toString()
+	{
+		stringstream  s;
+		s << "|" << x << "|" << y << "|" << z << "|";
+		
+		return s.str();
+	}
 };

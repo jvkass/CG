@@ -2,15 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <math.h>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <vector>
 
 #include <GL/glut.h>
 
 
-#include "Vector3.cpp"
 using namespace std;
-std::ostream& operator<<(std::ostream& o, Vector3 b){return b.dump(o);}
-//continuaçao do toString
 
+
+#include "Vector3.cpp"
 #include "Mesh.cpp"
 
 
@@ -77,13 +81,32 @@ void _Teclado(unsigned char key, int x, int y)
 
 int main(int argc, char *argv[])
 {
-	// Teste Vector3
-	/*Vector3 teste(0,0,0);
-	Vector3 teste2(10,1,1);
-	teste = teste . Soma(teste2);
-	cout << teste << endl;
-	teste = teste . Subtracao(teste);
-	cout << teste << endl;*/
+	//Testes Vector3
+	Vector3 teste1(0,0,0);
+	Vector3 teste2(1,1,1);
+	Vector3 teste3(3,4,-10);
+	Vector3 teste4(12,-2,-3);
+	Vector3 teste5(0.5f,0.5f,0.5f);
+	
+	Vector3 plano[3] = {Vector3(0,0,0),Vector3(0,1,0),Vector3(0,1,1)};
+	
+	cout << teste2.Magnitude() << endl;
+	cout << teste2.MagnitudeSquared() << endl;
+	cout << teste2.Normalize().toString() << endl;
+	cout << (teste2 + teste3).toString() << endl;
+	cout << (teste2 - teste3).toString() << endl;
+	cout << (teste2 * 2).toString() << endl;
+	cout << (teste2 / 2).toString() << endl;
+	cout << (teste2 == teste2) << endl;
+	cout << (teste2 == teste1) << endl;
+	cout << (teste2 == teste3) << endl;
+	cout << (teste2 != teste4) << endl;
+	cout << teste2.Dot(teste3) << endl;
+	cout << teste2.Cross(teste3).toString() << endl;
+	cout << teste2.Angle(teste3) << endl;
+	cout << teste5.Reflect(&plano[0]).toString() << endl;
+	
+	
 	
 	// Test load Obj
 	meshTeste = LoadObj("cube.obj");
