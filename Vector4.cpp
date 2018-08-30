@@ -30,18 +30,18 @@ struct Vector4
 		w = 1;
 	}
 
-	double* operator[](int id)
+	double& operator[](int id)
 	{
 		switch(id)
 		{
 			case 0:
-				return &x;
+				return x;
 			case 1:
-				return &y;
+				return y;
 			case 2:
-				return &z;
+				return z;
 			case 3:
-				return &w;	
+				return w;	
 		}
 	}
 	
@@ -57,22 +57,22 @@ struct Vector4
 		return v;
 	}
 	
-	Vector4 operator+(Vector4& v)
+	Vector4& operator+(Vector4& v)
 	{
 		return Vector4(x + v.x, y + v.y, z + v.z);
 	}
 	
-	Vector4 operator-(Vector4& v)
+	Vector4& operator-(Vector4& v)
 	{
 		return Vector4(x - v.x, y - v.y, z - v.z);
 	}
 	
-	Vector4 operator*(double d)
+	Vector4& operator*(double d)
 	{
 		return Vector4(x * d, y * d, z * d);
 	}
 	
-	Vector4 operator/(double d)
+	Vector4& operator/(double d)
 	{
 		return Vector4(x / d, y / d, z / d);
 	}

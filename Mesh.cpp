@@ -50,13 +50,13 @@ Mesh LoadObj(char* arquivo)
 			}
 			else if(linha[0] == 'v' && linha[1] == 'n')
 			{
-				sscanf(linhaProcessada.c_str(), "%lf %lf %lf\n", vec[0], vec[1], vec[2]);
+				sscanf(linhaProcessada.c_str(), "%lf %lf %lf\n", &vec[0], &vec[1], &vec[2]);
 				
 				mesh.normaisVertices.push_back(vec);
 			}
 			else if(linha[0] == 'v')
 			{
-				sscanf(linhaProcessada.c_str(), "%lf %lf %lf\n", vec[0], vec[1], vec[2]);
+				sscanf(linhaProcessada.c_str(), "%lf %lf %lf\n", &vec[0], &vec[1], &vec[2]);
 				
 				mesh.vertices.push_back(vec);
 			}

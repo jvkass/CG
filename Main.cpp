@@ -49,10 +49,10 @@ void _Display(void)
 	
 	
 	glLoadIdentity();
-	glTranslated(*camera[0], *camera[1], *camera[2]);
-	glRotatef(*cameraLook[0], 0.0f, 1.0, 0.0f);
-	glRotatef(-*cameraLook[1], 1.0f, 0.0f, 0.0f);
-	gluLookAt(5, 5, 5, 0, 0, 0, *cameraUp[0], *cameraUp[1], *cameraUp[2]);
+	glTranslated(camera[0], camera[1], camera[2]);
+	glRotatef(cameraLook[0], 0.0f, 1.0, 0.0f);
+	glRotatef(-cameraLook[1], 1.0f, 0.0f, 0.0f);
+	gluLookAt(5, 5, 5, 0, 0, 0, cameraUp[0], cameraUp[1], cameraUp[2]);
 	
 	
 	glColor3f(0.0, 0.0, 0.0);
@@ -120,22 +120,22 @@ void _Teclado(unsigned char key, int x, int y)
 			mouse[1] = 0;
 			break;
 		case 'a':
-			*camera[0] += *cameraSpeed[2];
+			camera[0] += cameraSpeed[2];
 			break;
 		case 'd':
-			*camera[0] -= *cameraSpeed[2];
+			camera[0] -= cameraSpeed[2];
 			break;
 		case 'o':
-			*camera[1] -= *cameraSpeed[2];
+			camera[1] -= cameraSpeed[2];
 			break;
 		case 'l':
-			*camera[1] += *cameraSpeed[2];
+			camera[1] += cameraSpeed[2];
 			break;
 		case 'w':
-			*camera[2] += *cameraSpeed[2];
+			camera[2] += cameraSpeed[2];
 			break;
 		case 's':
-			*camera[2] -= *cameraSpeed[2];
+			camera[2] -= cameraSpeed[2];
 			break;
 	}
 	
@@ -158,24 +158,24 @@ void _Mouse(int x, int y)
 		
 		if(mouse[0] > oldX)
 		{
-			rotateX = *cameraSpeed[0];
+			rotateX = cameraSpeed[0];
 		}
 		else if(mouse[0] < oldX)
 		{
-			rotateX = -*cameraSpeed[0];
+			rotateX = -cameraSpeed[0];
 		}
 		
 		if(mouse[1] > oldY)
 		{
-			rotateY = -*cameraSpeed[1];
+			rotateY = -cameraSpeed[1];
 		}
 		else if(mouse[1] < oldY)
 		{
-			rotateY = *cameraSpeed[1];
+			rotateY = cameraSpeed[1];
 		}
 		
-		*cameraLook[0] += rotateX;
-		*cameraLook[1] += rotateY;
+		cameraLook[0] += rotateX;
+		cameraLook[1] += rotateY;
 		//cameraLook = cameraRotation.Rotate(cameraLook, 'y', rotateY);
 	
 		glutPostRedisplay();
@@ -271,9 +271,9 @@ int main(int argc, char *argv[])
 	{
 		for(int j = 0; j < 3; ++j)
 		{
-			glVertex3d(*meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][0] * 1,
-					*meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][1] * 1,
-						*meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][2]);
+			glVertex3d(meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][0] * 1,
+					meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][1] * 1,
+						meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][2]);
 		}
 	}
 	
