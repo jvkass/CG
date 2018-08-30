@@ -29,27 +29,59 @@ GLdouble windowHeight = 600.0;
 int window;
 
 
-Mesh meshTeste;
+int mouse[2];
+
+Vector3 camera(0, 0, 0);
+Vector3 cameraLook(0, 0, 0);
+Vector3 cameraUp(0, 1, 0);
+Vector3 cameraSpeed(0.1f, 0.08f, 0.5f);
+Matrix cameraRotation(4, 4);
+
+
+Mesh meshObjeto;
+unsigned int objeto;
 
 // Callback do GLUT: Loop de display
 void _Display(void)
 {
 	// Teste com uma linha
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	glBegin(GL_TRIANGLES);
 	
-	for(int i = 0; i < meshTeste.faces.size(); ++i)
-	{
-		for(int j = 0; j < 3; ++j)
-		{
-			glVertex3d(*meshTeste.vertices[meshTeste.faces[i][j][0] - 1][0] * 1,
-					*meshTeste.vertices[meshTeste.faces[i][j][0] - 1][1] * 1,
-						*meshTeste.vertices[meshTeste.faces[i][j][0] - 1][2]);
-		}
-	}
 	
-	glEnd();
+	glLoadIdentity();
+	glTranslated(*camera[0], *camera[1], *camera[2]);
+	glRotatef(*cameraLook[0], 0.0f, 1.0, 0.0f);
+	glRotatef(-*cameraLook[1], 1.0f, 0.0f, 0.0f);
+	gluLookAt(5, 5, 5, 0, 0, 0, *cameraUp[0], *cameraUp[1], *cameraUp[2]);
+	
+	
+	glColor3f(0.0, 0.0, 0.0);
+	glPushMatrix();
+	glCallList(objeto);
+	glPopMatrix();
+	
+	glColor3f(1.0, 0.0, 0.0);
+	glPushMatrix();
+	glTranslatef(2, 0.0, -3.0);
+	glRotatef(99.0, 0.0, 0.0, 1.0);
+	glCallList(objeto);
+	glPopMatrix();
+	
+	glColor3f(0.0, 1.0, 0.0);
+	glPushMatrix();
+	glTranslatef(-3.5, 0.0, 3.0);
+	glScalef(0.5, 0.5, 0.5);
+	glRotatef(15.0, 0.0, 0.0, 1.0);
+	glCallList(objeto);
+	glPopMatrix();
+	
+	glColor3f(0.0, 0.0, 1.0);
+	glPushMatrix();
+	glScalef(2, 0.5, 1);
+	glTranslatef(0.0, -3.0, 1);
+	glRotatef(45.0, 1.0, 0.0, 0.0);
+	glCallList(objeto);
+	glPopMatrix();
 	glFlush();
 }
 
@@ -66,12 +98,13 @@ void _Redimensionar(int w, int h)
 	gluPerspective(45.0, windowWidth/windowHeight, 0, 10);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(2.0, 2.0, 3.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	
+	glutPostRedisplay();
 }
 
 // Callback do GLUT: Eventos de teclado
 void _Teclado(unsigned char key, int x, int y)
-{
+{	
 	switch((char)key)
 	{
 		// ESC
@@ -79,8 +112,73 @@ void _Teclado(unsigned char key, int x, int y)
 			glutDestroyWindow(window);
 			exit(0);
 			break;
-		default:
+		case 32:
+			cameraLook = Vector3(0,0,0);
+			camera = Vector3(0,0,0);
+			
+			mouse[0] = 0;
+			mouse[1] = 0;
 			break;
+		case 'a':
+			*camera[0] += *cameraSpeed[2];
+			break;
+		case 'd':
+			*camera[0] -= *cameraSpeed[2];
+			break;
+		case 'o':
+			*camera[1] -= *cameraSpeed[2];
+			break;
+		case 'l':
+			*camera[1] += *cameraSpeed[2];
+			break;
+		case 'w':
+			*camera[2] += *cameraSpeed[2];
+			break;
+		case 's':
+			*camera[2] -= *cameraSpeed[2];
+			break;
+	}
+	
+	glutPostRedisplay();
+}
+
+// Callback do GLUT: Eventos de mouse com algum botão pressionado
+void _Mouse(int x, int y)
+{
+	int oldX = mouse[0];
+	int oldY = mouse[1];
+	
+	mouse[0] = x;
+	mouse[1] = y;
+	
+	if(mouse[0] != oldX || mouse[1] != oldY)
+	{
+		double rotateX = 0;
+		double rotateY = 0;
+		
+		if(mouse[0] > oldX)
+		{
+			rotateX = *cameraSpeed[0];
+		}
+		else if(mouse[0] < oldX)
+		{
+			rotateX = -*cameraSpeed[0];
+		}
+		
+		if(mouse[1] > oldY)
+		{
+			rotateY = -*cameraSpeed[1];
+		}
+		else if(mouse[1] < oldY)
+		{
+			rotateY = *cameraSpeed[1];
+		}
+		
+		*cameraLook[0] += rotateX;
+		*cameraLook[1] += rotateY;
+		//cameraLook = cameraRotation.Rotate(cameraLook, 'y', rotateY);
+	
+		glutPostRedisplay();
 	}
 }
 
@@ -111,8 +209,9 @@ int main(int argc, char *argv[])
 	cout << teste2.Angle(teste3) << endl;
 	cout << teste5.Reflect(&plano[0]).toString() << endl;*/
 	
+	
 	//Testes Matrix
-	Matrix m1(4, 4);
+	/*Matrix m1(4, 4);
 	m1[0][0] = 0;
 	m1[0][1] = 1;
 	m1[0][2] = 1;
@@ -130,25 +229,6 @@ int main(int argc, char *argv[])
 	
 	Vector3 v1(3,7,5);
 	
-	Matrix m4(4, 4);
-	m4[0][0] = 1;
-	m4[0][3] = 2;
-	m4[1][1] = 1;
-	m4[1][3] = -1;
-	m4[2][2] = 1;
-	m4[2][3] = 4;
-	m4[3][3] = 1;
-	
-	Matrix m5(4, 4);
-	m5[0][0] = 2;
-	m5[1][1] = 2;
-	m5[2][2] = 2;
-	m5[3][3] = 1;
-	
-	Matrix m6(4, 4);
-	
-	Vector3 v2(0,1,0);
-	
 	cout << (m1 + m2).toString() << endl;
 	cout << (m2 - m1).toString() << endl;
 	cout << (m1	* 2).toString() << endl;
@@ -156,33 +236,49 @@ int main(int argc, char *argv[])
 	cout << m3.toString() << endl;
 	cout << m3.Transpose().toString() << endl;
 	cout << (m1 * m2).toString() << endl;
-	cout << (m1 * v1).toString() << endl;
-	cout << m4.toString() << endl;
-	cout << v1.toString() << endl;
-	cout << m4.Translate(v1).toString() << endl;
-	cout << m5.Scale(v1).toString() << endl;
-	cout << m6.Rotate(v2, 90, 'x').toString() << endl;
-	
-	
-	// Test load Obj
-	meshTeste = LoadObj("cube.obj");
+	cout << (m1 * v1).toString() << endl;*/
 
+	
 	// Inicialização do GLUT e janela
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
 	glutInitWindowSize((int) windowWidth, (int) windowHeight);
 	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)- windowWidth)/2, (glutGet(GLUT_SCREEN_HEIGHT)- windowHeight)/2);
 	window = glutCreateWindow("CG");
-
+	
+	
 	// Definição de callbacks
 	glutReshapeFunc(_Redimensionar);
 	glutKeyboardFunc(_Teclado);
+	glutMotionFunc(_Mouse);
 	glutDisplayFunc(_Display);
 
+	
 	// Definição de cor de fundo,  cor de desenho e espessura da linha de teste
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glColor3f(0.0, 0.0, 0.0);
-	glLineWidth(3.0);
+	glLineWidth(2.0);
+	
+	
+	// Definição da Draw List e load do objeto
+	meshObjeto = LoadObj("cube.obj");
+	
+	objeto = glGenLists(1);
+	glNewList(objeto, GL_COMPILE);
+	glBegin(GL_TRIANGLES);
+	
+	for(int i = 0; i < meshObjeto.faces.size(); ++i)
+	{
+		for(int j = 0; j < 3; ++j)
+		{
+			glVertex3d(*meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][0] * 1,
+					*meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][1] * 1,
+						*meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][2]);
+		}
+	}
+	
+	glEnd();
+	glEndList();
 	
 	// Habilita render de wireframes
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

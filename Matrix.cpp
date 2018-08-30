@@ -218,7 +218,7 @@ struct Matrix
 		return Vector4(v.x * matrix[0][0], v.y * matrix[1][1], v.z * matrix[2][2]);
 	}
 	
-	Vector3 Rotate(Vector3 v, double angle, char axis)
+	Vector3 Rotate(Vector3 v, char axis, double angle)
 	{
 		if(height != 4 || width != 4)
 		{
