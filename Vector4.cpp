@@ -7,8 +7,6 @@
 #define Vector4_ONE		Vector4(1, 1, 1)
 #define Vector4_ZERO	Vector4(0, 0, 0)
 
-#define RADIANOS_PARA_GRAUS 180 / 3.141592653589793238463
-
 struct Vector4
 {	
 	double x;
@@ -55,6 +53,8 @@ struct Vector4
 			y = v.y;
 			z = v.z;
 		}
+		
+		return v;
 	}
 	
 	Vector4 operator+(Vector4& v)

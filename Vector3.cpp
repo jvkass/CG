@@ -7,8 +7,6 @@
 #define Vector3_ONE		Vector3(1, 1, 1)
 #define Vector3_ZERO	Vector3(0, 0, 0)
 
-#define RADIANOS_PARA_GRAUS 180 / 3.141592653589793238463
-
 struct Vector3
 {	
 	double x;
@@ -50,6 +48,8 @@ struct Vector3
 			y = v.y;
 			z = v.z;
 		}
+		
+		return v;
 	}
 	
 	Vector3 operator+(Vector3& v)
@@ -136,7 +136,7 @@ struct Vector3
 	string toString()
 	{
 		stringstream  s;
-		s << "|" << x << "|" << y << "|" << z << "|";
+		s << "|" << x << "|" << y << "|" << z << "|\n";
 		
 		return s.str();
 	}

@@ -14,8 +14,12 @@
 using namespace std;
 
 
+#define RADIANOS_PARA_GRAUS 180 / 3.14159265358979323846f
+#define GRAUS_PARA_RADIANOS 3.14159265358979323846f / 180
+
 #include "Vector3.cpp"
 #include "Vector4.cpp"
+#include "Matrix.cpp"
 #include "Mesh.cpp"
 
 
@@ -83,7 +87,7 @@ void _Teclado(unsigned char key, int x, int y)
 int main(int argc, char *argv[])
 {
 	//Testes Vector3
-	Vector3 teste1(0,0,0);
+	/*Vector3 teste1(0,0,0);
 	Vector3 teste2(1,1,1);
 	Vector3 teste3(3,4,-10);
 	Vector3 teste4(12,-2,-3);
@@ -105,8 +109,59 @@ int main(int argc, char *argv[])
 	cout << teste2.Dot(teste3) << endl;
 	cout << teste2.Cross(teste3).toString() << endl;
 	cout << teste2.Angle(teste3) << endl;
-	cout << teste5.Reflect(&plano[0]).toString() << endl;
+	cout << teste5.Reflect(&plano[0]).toString() << endl;*/
 	
+	//Testes Matrix
+	Matrix m1(4, 4);
+	m1[0][0] = 0;
+	m1[0][1] = 1;
+	m1[0][2] = 1;
+	m1[2][2] = 1;
+	
+	Matrix m2(4, 4);
+	m2[0][0] = 2;
+	m2[1][0] = 2;
+	m2[2][0] = 2;
+	m2[3][0] = 2;
+	
+	Matrix m3(4, 2);
+	m3[0][1] = 1;
+	m3[3][0] = 1;
+	
+	Vector3 v1(3,7,5);
+	
+	Matrix m4(4, 4);
+	m4[0][0] = 1;
+	m4[0][3] = 2;
+	m4[1][1] = 1;
+	m4[1][3] = -1;
+	m4[2][2] = 1;
+	m4[2][3] = 4;
+	m4[3][3] = 1;
+	
+	Matrix m5(4, 4);
+	m5[0][0] = 2;
+	m5[1][1] = 2;
+	m5[2][2] = 2;
+	m5[3][3] = 1;
+	
+	Matrix m6(4, 4);
+	
+	Vector3 v2(0,1,0);
+	
+	cout << (m1 + m2).toString() << endl;
+	cout << (m2 - m1).toString() << endl;
+	cout << (m1	* 2).toString() << endl;
+	cout << (m1 / 2).toString() << endl;
+	cout << m3.toString() << endl;
+	cout << m3.Transpose().toString() << endl;
+	cout << (m1 * m2).toString() << endl;
+	cout << (m1 * v1).toString() << endl;
+	cout << m4.toString() << endl;
+	cout << v1.toString() << endl;
+	cout << m4.Translate(v1).toString() << endl;
+	cout << m5.Scale(v1).toString() << endl;
+	cout << m6.Rotate(v2, 90, 'x').toString() << endl;
 	
 	
 	// Test load Obj
