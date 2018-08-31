@@ -52,22 +52,22 @@ struct Vector3
 		return v;
 	}
 	
-	Vector3& operator+(Vector3& v)
+	Vector3 operator+(Vector3& v)
 	{
 		return Vector3(x + v.x, y + v.y, z + v.z);
 	}
 	
-	Vector3& operator-(Vector3& v)
+	Vector3 operator-(Vector3& v)
 	{
 		return Vector3(x - v.x, y - v.y, z - v.z);
 	}
 	
-	Vector3& operator*(double d)
+	Vector3 operator*(double d)
 	{
 		return Vector3(x * d, y * d, z * d);
 	}
 	
-	Vector3& operator/(double d)
+	Vector3 operator/(double d)
 	{
 		return Vector3(x / d, y / d, z / d);
 	}

@@ -31,7 +31,7 @@ struct Matrix
 		return matrix[id];
 	}
 	
-	Matrix& operator=(Matrix& m)
+	Matrix operator=(Matrix& m)
 	{
 		Matrix ma(width, height);
 		
@@ -51,14 +51,14 @@ struct Matrix
 		return ma;
 	}
 	
-	Matrix& operator+(Matrix& m)
+	Matrix operator+(Matrix& m)
 	{
-		Matrix ma(width, height);
-		
 		if(width != m.width || height != m.height)
 		{
-			return ma;
+			return Matrix(width, height);
 		}
+		
+		Matrix ma(width, height);
 		
 		for(int i = 0; i < width; ++i)
 		{
@@ -71,14 +71,14 @@ struct Matrix
 		return ma;
 	}
 	
-	Matrix& operator-(Matrix& m)
+	Matrix operator-(Matrix& m)
 	{
-		Matrix ma(width, height);
-		
 		if(width != m.width || height != m.height)
 		{
-			return ma;
+			return Matrix(width, height);
 		}
+		
+		Matrix ma(width, height);
 		
 		for(int i = 0; i < width; ++i)
 		{
@@ -91,7 +91,7 @@ struct Matrix
 		return ma;
 	}
 	
-	Matrix& operator*(double d)
+	Matrix operator*(double d)
 	{
 		Matrix ma(width, height);
 		
@@ -106,14 +106,14 @@ struct Matrix
 		return ma;
 	}
 	
-	Matrix& operator*(Matrix m)
+	Matrix operator*(Matrix m)
 	{
-		Matrix ma(width, height);
-		
 		if(height != m.width)
 		{
-			return ma;
+			return Matrix(width, height);
 		}
+		
+		Matrix ma(width, height);
 		
 		for(int i = 0; i < width; ++i)
 		{
@@ -129,14 +129,14 @@ struct Matrix
 		return ma;
 	}
 	
-	Vector3& operator*(Vector3 v)
+	Vector3 operator*(Vector3 v)
 	{
-		Vector4 ve(v.x, v.y, v.z);
-		
 		if(height != 4 || width != 4)
 		{
-			return v;
+			return Vector3(v.x, v.y, v.z);
 		}
+		
+		Vector4 ve(v.x, v.y, v.z);
 		
 		for(int i = 0; i < width; ++i)
 		{
@@ -146,14 +146,14 @@ struct Matrix
 		return Vector3(ve.x, ve.y, ve.z);
 	}
 	
-	Vector4& operator*(Vector4 v)
+	Vector4 operator*(Vector4 v)
 	{
-		Vector4 ve(v.x, v.y, v.z);
-		
 		if(height != 4 || width != 4)
 		{
-			return v;
+			return Vector4(v.x, v.y, v.z);
 		}
+		
+		Vector4 ve(v.x, v.y, v.z);
 		
 		for(int i = 0; i < width; ++i)
 		{
@@ -163,7 +163,7 @@ struct Matrix
 		return Vector4(ve.x, ve.y, ve.z);
 	}
 	
-	Matrix& operator/(double d)
+	Matrix operator/(double d)
 	{
 		Matrix ma(width, height);
 		

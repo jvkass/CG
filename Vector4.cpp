@@ -57,22 +57,22 @@ struct Vector4
 		return v;
 	}
 	
-	Vector4& operator+(Vector4& v)
+	Vector4 operator+(Vector4& v)
 	{
 		return Vector4(x + v.x, y + v.y, z + v.z);
 	}
 	
-	Vector4& operator-(Vector4& v)
+	Vector4 operator-(Vector4& v)
 	{
 		return Vector4(x - v.x, y - v.y, z - v.z);
 	}
 	
-	Vector4& operator*(double d)
+	Vector4 operator*(double d)
 	{
 		return Vector4(x * d, y * d, z * d);
 	}
 	
-	Vector4& operator/(double d)
+	Vector4 operator/(double d)
 	{
 		return Vector4(x / d, y / d, z / d);
 	}

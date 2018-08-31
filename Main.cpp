@@ -39,7 +39,11 @@ Matrix cameraRotation(4, 4);
 
 
 Mesh meshObjeto;
-unsigned int objeto;
+GLuint objeto;
+
+GLuint* vao;
+GLuint* vbo;
+GLuint* ibo;
 
 // Callback do GLUT: Loop de display
 void _Display(void)
@@ -82,7 +86,8 @@ void _Display(void)
 	glRotatef(45.0, 1.0, 0.0, 0.0);
 	glCallList(objeto);
 	glPopMatrix();
-	glFlush();
+	
+	glutSwapBuffers();
 }
 
 // Callback do GLUT: Chamado na criação da janela e toda vez que ela for redimensionada
@@ -185,7 +190,7 @@ void _Mouse(int x, int y)
 int main(int argc, char *argv[])
 {
 	//Testes Vector3
-	/*Vector3 teste1(0,0,0);
+	Vector3 teste1(0,0,0);
 	Vector3 teste2(1,1,1);
 	Vector3 teste3(3,4,-10);
 	Vector3 teste4(12,-2,-3);
@@ -207,11 +212,11 @@ int main(int argc, char *argv[])
 	cout << teste2.Dot(teste3) << endl;
 	cout << teste2.Cross(teste3).toString() << endl;
 	cout << teste2.Angle(teste3) << endl;
-	cout << teste5.Reflect(&plano[0]).toString() << endl;*/
+	cout << teste5.Reflect(&plano[0]).toString() << endl;
 	
 	
 	//Testes Matrix
-	/*Matrix m1(4, 4);
+	Matrix m1(4, 4);
 	m1[0][0] = 0;
 	m1[0][1] = 1;
 	m1[0][2] = 1;
@@ -236,12 +241,12 @@ int main(int argc, char *argv[])
 	cout << m3.toString() << endl;
 	cout << m3.Transpose().toString() << endl;
 	cout << (m1 * m2).toString() << endl;
-	cout << (m1 * v1).toString() << endl;*/
+	cout << (m1 * v1).toString() << endl;
 
 	
 	// Inicialização do GLUT e janela
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA); 
 	glutInitWindowSize((int) windowWidth, (int) windowHeight);
 	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)- windowWidth)/2, (glutGet(GLUT_SCREEN_HEIGHT)- windowHeight)/2);
 	window = glutCreateWindow("CG");
@@ -260,7 +265,7 @@ int main(int argc, char *argv[])
 	glLineWidth(2.0);
 	
 	
-	// Definição da Draw List e load do objeto
+	// Definição dos buffers para render e load do objeto
 	meshObjeto = LoadObj("cube.obj");
 	
 	objeto = glGenLists(1);
@@ -271,14 +276,15 @@ int main(int argc, char *argv[])
 	{
 		for(int j = 0; j < 3; ++j)
 		{
-			glVertex3d(meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][0] * 1,
-					meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][1] * 1,
-						meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][2]);
+			glVertex3d(meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][0],
+							meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][1],
+								meshObjeto.vertices[meshObjeto.faces[i][j][0] - 1][2]);
 		}
 	}
 	
 	glEnd();
 	glEndList();
+	
 	
 	// Habilita render de wireframes
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
