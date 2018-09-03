@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <sstream>
 #include <string>
+
 class Matriz {
 
 private:
@@ -29,6 +30,12 @@ public:
 	Matriz operator-(Matriz b);
 	Matriz operator*(double b);
 	Matriz operator*(Matriz b);
+	Matriz operator/(double b);
+	Matriz Translacao(double dx,double dy, double dz);
+	Matriz Identidade(int altura);
+	Matriz Escala(double Sx, double Sy, double Sz);
+	Matriz ProdutoVetorial(double a1,double a2,double a3,double b1,double b2,double b3);
+	Matriz Rotacao(double a1,double a2,double a3,double b1,double b2,double b3);
 };
 
 #endif /* MATRIZ_H_ */
