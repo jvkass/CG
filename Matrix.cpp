@@ -193,6 +193,105 @@ struct Matrix
 		return ma;
 	}
 	
+	Vector3 Translate(Vector3 v)
+	{
+		if(height != 4 || width != 4)
+		{
+			return v;
+		}
+		
+		return Vector3(v.x + (matrix[0][3] * matrix[0][0]), v.y + (matrix[1][3] * matrix[1][1]), v.z + (matrix[2][3] * matrix[2][2]));
+	}
+	
+	Vector4 Translate(Vector4 v)
+	{
+		if(height != 4 || width != 4)
+		{
+			return v;
+		}
+		
+		return Vector4(v.x + (matrix[0][3] * matrix[0][0]), v.y + (matrix[1][3] * matrix[1][1]), v.z + (matrix[2][3] * matrix[2][2]));
+	}
+	
+	Vector3 Scale(Vector3 v)
+	{
+		if(height != 4 || width != 4)
+		{
+			return v;
+		}
+		
+		return Vector3(v.x * matrix[0][0], v.y * matrix[1][1], v.z * matrix[2][2]);
+	}
+	
+	Vector4 Scale(Vector4 v)
+	{
+		if(height != 4 || width != 4)
+		{
+			return v;
+		}
+		
+		return Vector4(v.x * matrix[0][0], v.y * matrix[1][1], v.z * matrix[2][2]);
+	}
+	
+	Vector3 Rotate(Vector3 v, double angle, char axis)
+	{
+		if(height != 4 || width != 4)
+		{
+			return v;
+		}
+		
+		angle = angle * GRAUS_PARA_RADIANOS;
+		
+		switch(axis)
+		{
+			case 'x':
+				matrix[0][0] = 1;
+				matrix[0][1] = 0;
+				matrix[0][2] = 0;
+				
+				matrix[1][0] = 0;
+				matrix[1][1] = cos(angle);
+				matrix[1][2] = -sin(angle);
+				
+				matrix[2][0] = 0;
+				matrix[2][1] = sin(angle);
+				matrix[2][2] = cos(angle);
+				break;
+			case 'y':
+				matrix[0][0] = cos(angle);
+				matrix[0][1] = 0;
+				matrix[0][2] = sin(angle);
+				
+				matrix[1][0] = 0;
+				matrix[1][1] = 1;
+				matrix[1][2] = 0;
+				
+				matrix[2][0] = -sin(angle);
+				matrix[2][1] = 0;
+				matrix[2][2] = cos(angle);
+				break;
+			case 'z':
+				matrix[0][0] = cos(angle);
+				matrix[0][1] = -sin(angle);
+				matrix[0][2] = 0;
+				
+				matrix[1][0] = sin(angle);
+				matrix[1][1] = cos(angle);
+				matrix[1][2] = 0;
+				
+				matrix[2][0] = 0;
+				matrix[2][1] = 0;
+				matrix[2][2] = 1;
+				break;
+		}
+		
+		matrix[3][3] = 1;
+		
+		Vector3 ve = *this * v;
+		
+		return Vector3(ve.x, ve.y, ve.z);
+	}
+	
 	string toString()
 	{
 		stringstream  s;

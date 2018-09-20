@@ -4,19 +4,29 @@ struct Mesh
 	
 	vector<Vector3> vertices;
 	vector<Vector3> normaisVertices;
-	vector<vector<vector<int>>> faces;
+	vector<vector<vector<unsigned short>>> faces;
+	
+	
+	int VerticesSize()
+	{
+		return vertices.size() * 3 * sizeof(double);
+	}
+	
+	int FacesSize()
+	{
+		return faces.size() * faces[0].size() * faces[0][0].size() * sizeof(unsigned short);
+	}
 };
 
 
-Mesh LoadObj(char* arquivo)
+void LoadObj(char* arquivo, Mesh* mesh)
 {
-	Mesh mesh;
-	
+
 	string linha;
 	string linhaProcessada;
 	
 	Vector3 vec;
-	vector<vector<int>> fac;
+	vector<vector<unsigned short>> fac;
 	fac.push_back({0, 0});
 	fac.push_back({0, 0});
 	fac.push_back({0, 0});
@@ -46,25 +56,25 @@ Mesh LoadObj(char* arquivo)
 			
 			if(linha[0] == 'g' || linha[0] == 'o')
 			{
-				mesh.nome = linhaProcessada;
+				mesh->nome = linhaProcessada;
 			}
 			else if(linha[0] == 'v' && linha[1] == 'n')
 			{
 				sscanf(linhaProcessada.c_str(), "%lf %lf %lf\n", &vec[0], &vec[1], &vec[2]);
 				
-				mesh.normaisVertices.push_back(vec);
+				mesh->normaisVertices.push_back(vec);
 			}
 			else if(linha[0] == 'v')
 			{
 				sscanf(linhaProcessada.c_str(), "%lf %lf %lf\n", &vec[0], &vec[1], &vec[2]);
 				
-				mesh.vertices.push_back(vec);
+				mesh->vertices.push_back(vec);
 			}
 			else if(linha[0] == 'f')
 			{
-				sscanf(linhaProcessada.c_str(), "%i//%i %i//%i %i//%i\n", &fac[0][0], &fac[0][1], &fac[1][0], &fac[1][1], &fac[2][0], &fac[2][1]);
+				sscanf(linhaProcessada.c_str(), "%hi//%hi %hi//%hi %hi//%hi\n", &fac[0][0], &fac[0][1], &fac[1][0], &fac[1][1], &fac[2][0], &fac[2][1]);
 				
-				mesh.faces.push_back({fac[0], fac[1], fac[2]});
+				mesh->faces.push_back({fac[0], fac[1], fac[2]});
 			}
 			
 		}
@@ -72,6 +82,4 @@ Mesh LoadObj(char* arquivo)
 		obj.close();
 		
 	}
-	
-	return mesh;
 }
