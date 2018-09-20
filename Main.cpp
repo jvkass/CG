@@ -40,128 +40,48 @@ GLuint* vao;
 GLuint* vbo;
 GLuint* ibo;
 
-float kEpsilon = 0.000001;
-
-Vector3 crossProduct(Vector3 point1, Vector3 point2){
-
-  Vector3 vector; 
-
-  vector.x = point1.y * point2.z - point2.y * point1.z; 
-  vector.y = point2.x * point1.z - point1.x * point2.z; 
-  vector.z = point1.x * point2.y - point1.y * point2.x; 
-
-  return vector;
-}
-
-float dotProduct(Vector3 dot1, Vector3 dot2){
-
-  float dot = dot1.x * dot2.x + dot1.y * dot2.y + dot1.z * dot2.z; 
-
-  return dot;
-}
-
-bool RayIntersectsTriangle(Vector3 orig, Vector3 dir, Vector3 p0, Vector3 p1, Vector3 p2)
+bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
 {
-// compute plane's normal
-
-  Vector3 p0p1, p0p2;
-
-  p0p1.x = p1.x - p0.x; 
-  p0p1.y = p1.y - p0.y; 
-  p0p1.z = p1.z - p0.z; 
-
-  p0p2.x = p2.x - p0.x;
-  p0p2.x = p2.x - p0.x;
-  p0p2.y = p2.y - p0.y; 
-  p0p2.z = p2.z - p0.z;
-
-  // no need to normalize
-  Vector3 N = crossProduct(p0p1, p0p2); // N 
-
-  // Step 1: finding P
-
-  // check if ray and plane are parallel ?
-  float NdotRayDirection = dotProduct(N, dir); // if the result is 0, the function will return the value false (no intersection).
-
-  if (fabs(NdotRayDirection) < kEpsilon){ // almost 0 
-
-      return false; // they are parallel so they don't intersect ! 
-  }
-
-  // compute d parameter using equation 2
-  float d = dotProduct(N, p0); 
-
-  // compute t (equation P=O+tR P intersection point ray origin O and its direction R)
-
-  float t = -((dotProduct(N, orig) - d) / NdotRayDirection);
-
-  // check if the triangle is in behind the ray
-  //if (t < 0){ return false; } // the triangle is behind 
-
-  // compute the intersection point using equation
-  Vector3 P; 
-
-  //this part should do the work, but it does not work.
-  P.x = orig.x + t * dir.x; 
-  P.y = orig.y + t * dir.y; 
-  P.z = orig.z + t * dir.z; 
-
-
-  // Step 2: inside-outside test
-  Vector3 C; // vector perpendicular to triangle's plane 
-
-  // edge 0
-  Vector3 edge0; 
-
-  edge0.x = p1.x - p0.x;
-  edge0.y = p1.y - p0.y;
-  edge0.z = p1.z - p0.z;
-
-  Vector3 vp0; 
-
-  vp0.x = P.x - p0.x;
-  vp0.y = P.y - p0.y; 
-  vp0.z = P.z - p0.z; 
-
-  C = crossProduct(edge0, vp0); 
-
-  if (dotProduct(N, C) < 0) { return false; }// P is on the right side 
-
-  // edge 1
-  Vector3 edge1;
-
-  edge1.x = p2.x - p1.x;
-  edge1.y = p2.y - p1.y;
-  edge1.z = p2.z - p1.z;
-
-  Vector3 vp1; 
-
-  vp1.x = P.x - p1.x; 
-  vp1.y = P.y - p1.y; 
-  vp1.z = P.z - p1.z; 
-
-  C = crossProduct(edge1, vp1); 
-
-  if (dotProduct(N, C) < 0) { return false; } // P is on the right side 
-
-  // edge 2
-  Vector3 edge2;
-
-  edge2.x = p0.x - p2.x;    
-  edge2.y = p0.y - p2.y;
-  edge2.z = p0.z - p2.z;
-
-  Vector3 vp2; 
-
-  vp2.x = P.x - p2.x;
-  vp2.y = P.y - p2.y;
-  vp2.z = P.z - p2.z;
-
-  C = crossProduct(edge2, vp2);
-
-  if (dotProduct(N, C) < 0) { return false; } // P is on the right side; 
-
-  return true; // this ray hits the triangle 
+    float EPSILON = 0.0000001; 
+	
+    Vector3 edge1, edge2, h, s, q;
+    float a,f,u,v;
+	
+    edge1 = vertex1 - vertex0;
+    edge2 = vertex2 - vertex0;
+    h = rayVector.Cross(edge2);
+    a = edge1.Dot(h);
+	
+    if (a > -EPSILON && a < EPSILON)
+	{
+        return false;
+	}
+	
+    f = 1/a;
+    s = rayOrigin - vertex0;
+    u = f * (s.Dot(h));
+	
+    if (u < 0.0 || u > 1.0)
+	{
+        return false;
+	}
+	
+    q = s.Cross(edge1);
+    v = f * rayVector.Dot(q);
+	
+    if (v < 0.0 || u + v > 1.0)
+	{
+        return false;
+	}
+	
+    if (f * edge2.Dot(q) > EPSILON)
+    {
+        return true;
+    }
+    else
+	{
+        return false;
+	}
 }
 
 // Callback do GLUT: Loop de display
@@ -179,16 +99,13 @@ void _Display(void)
 	{
 		for(int j = 0; j < windowHeight/3; ++j)
 		{
-			if(RayIntersectsTriangle({0,0,-1}, {(double)i,(double)j, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}))
-			{
-				glColor3d(1,0,0);
-				glVertex2d((i * 3 - windowWidth/2), (j * 3 - windowHeight/2));
-			}
-			else
-			{
-				glColor3d(0,0,0.5f);
-				glVertex2d((i * 3 - windowWidth/2), (j * 3 - windowHeight/2));
-			}
+			double x = (i * 3 - windowWidth/2);
+			double y = (j * 3 - windowHeight/2);
+			
+
+			glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),0,0.5f);
+			
+			glVertex2d(x, y);
 		}
 	}
 	glEnd();
