@@ -1,0 +1,4 @@
+﻿  Main.cpp
+c:\users\ton santos\documents\graduação\cg\vector3.cpp(42): warning C4715: 'Vector3::operator[]': nem todos os caminhos de controle retornam um valor
+c:\users\ton santos\documents\graduação\cg\vector4.cpp(46): warning C4715: 'Vector4::operator[]': nem todos os caminhos de controle retornam um valor
+  ccc.vcxproj -> C:\Users\Ton Santos\Documents\Graduação\CG\x64\Debug\ccc.exe
