@@ -265,16 +265,16 @@ int main(int argc, char *argv[])
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glColor3f(0.0, 0.0, 0.0);
 	glLineWidth(2.0);
-cout<<"ate aq d nv"<<endl;
+
 
 	for(int i = 0; i < 20; ++i)
 	{
 		LoadObj("cube.obj", &objeto[i].mesh);
-		cout<<"flag 1"<<endl;
+		
 		objeto[i].color = Vector3{((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX))};
-		cout<<"flag 2"<<endl;
+		
 		objeto[i].transform.scale = Vector3{(double)(rand() % 200), (double)(rand() % 200), (double)(rand() % 200)};
-		cout<<"flag 3"<<endl;
+		
 		objeto[i].transform.rotation = Vector3{(double)(rand() % 360), (double)(rand() % 360), (double)(rand() % 360)};
 
 		objeto[i].transform.position = Vector3{(double)(rand() % (int)windowWidth) - windowWidth/2, (double)(rand() % (int)windowHeight) - windowHeight/2, 0};

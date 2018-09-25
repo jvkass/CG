@@ -21,9 +21,9 @@ Matrix::Matrix(int w, int h)
 	{
 		width = w;
 		height = h;
-cout<<"entrando no laco"<<endl;
+
 		matrix = new double*[width];
-		cout<<"entrando no laco"<<endl;
+		
 		for (int i = 0; i < width; ++i)
 		{
 			matrix[i] = new double[height];
@@ -36,7 +36,7 @@ cout<<"entrando no laco"<<endl;
 				matrix[i][j] = 0;
 			}
 		}
-		cout<<"sai"<<endl;
+	
 }
 
 double* Matrix::operator[](int id)
