@@ -102,7 +102,24 @@ void _Display(void)
 			double x = (i * 3 - windowWidth/2);
 			double y = (j * 3 - windowHeight/2);
 			
-
+			/*for(int k = 0; k < 1; ++k)
+			{
+				for(int l = 0; l < objeto[k].mesh.faces.size(); ++l)
+				{	
+					glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y,1},
+								Vector3{objeto[k].mesh.vertices[objeto[k].mesh.faces[l][0][0] - 1][0],
+										objeto[k].mesh.vertices[objeto[k].mesh.faces[l][0][0] - 1][1],
+										objeto[k].mesh.vertices[objeto[k].mesh.faces[l][0][0] - 1][2]},
+								Vector3{objeto[k].mesh.vertices[objeto[k].mesh.faces[l][1][0] - 1][0],
+										objeto[k].mesh.vertices[objeto[k].mesh.faces[l][1][0] - 1][1],
+										objeto[k].mesh.vertices[objeto[k].mesh.faces[l][1][0] - 1][2]},
+								Vector3{objeto[k].mesh.vertices[objeto[k].mesh.faces[l][2][0] - 1][0],
+										objeto[k].mesh.vertices[objeto[k].mesh.faces[l][2][0] - 1][1],
+										objeto[k].mesh.vertices[objeto[k].mesh.faces[l][2][0] - 1][2]}),
+								0,0.5f);
+				}
+			}*/
+			
 			glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),0,0.5f);
 			
 			glVertex2d(x, y);
@@ -115,7 +132,6 @@ void _Display(void)
 		glPushMatrix();
 		
 		glColor3d(objeto[k].color.x, objeto[k].color.y, objeto[k].color.z);
-		//glRotated(objeto[k].transform.rotation.x, objeto[k].transform.rotation.y, objeto[k].transform.rotation.z, 0.0);
 		
 		glBegin(GL_TRIANGLES);
 		for(int i = 0; i < objeto[k].mesh.faces.size(); ++i)
@@ -262,7 +278,7 @@ int main(int argc, char *argv[])
 		LoadObj("cube.obj", &objeto[i].mesh);
 		
 		objeto[i].color = Vector3{((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX))};
-		objeto[i].transform.scale = Vector3{(double)(rand() % 200), (double)(rand() % 200), (double)(rand() % 200)};
+		objeto[i].transform.scale = Vector3{100, 100, 100};
 		objeto[i].transform.rotation = Vector3{(double)(rand() % 360), (double)(rand() % 360), (double)(rand() % 360)};
 		
 		objeto[i].transform.position = Vector3{(double)(rand() % (int)windowWidth) - windowWidth/2, (double)(rand() % (int)windowHeight) - windowHeight/2, 0};
@@ -275,8 +291,8 @@ int main(int argc, char *argv[])
 		
 		Matrix m2{4, 4};
 		m2[0][0] = objeto[i].transform.scale.x;
-		m2[1][1] = objeto[i].transform.scale.x;
-		m2[2][2] = objeto[i].transform.scale.x;
+		m2[1][1] = objeto[i].transform.scale.y;
+		m2[2][2] = objeto[i].transform.scale.z;
 		m2[3][3] = 1;
 		
 		Matrix m1{4, 4};
@@ -290,13 +306,15 @@ int main(int argc, char *argv[])
 
 		for(int k = 0; k < objeto[i].mesh.vertices.size(); ++k)
 		{
-			Vector3 v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.x, 'x');
-			v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.y, 'y');
-			v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.z, 'z');
+			Vector3
 			
 			v = m2.Scale(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]));
 			
-			v = m1.Translate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]));
+			//v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.x, 'x');
+			//v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.y, 'y');
+			//v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.z, 'z');
+			
+			//v = m1.Translate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]));
 												
 			objeto[i].mesh.vertices[k].x = v.x;
 			objeto[i].mesh.vertices[k].y = v.y;
