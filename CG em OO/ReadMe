@@ -1,0 +1,1 @@
+g++ Vector3.cpp Vector4.cpp Matrix.cpp Mesh.cpp Transform.h GameObject.h Main.cpp -o Main -lGL -lGLU -lGLEW -lglut -lm -Wno-write-strings
