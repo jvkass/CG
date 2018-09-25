@@ -40,7 +40,7 @@ int window;
 
 
 
-GameObject *objeto[20];
+GameObject objeto[20];
 
 GLuint* vao;
 GLuint* vbo;

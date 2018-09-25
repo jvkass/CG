@@ -12,10 +12,10 @@
 #include "Vector3.h"
 class GameObject {
 public:
-	GameObject();
+	//GameObject();
 	Mesh mesh;
 	Transform transform;
-	Vector3 color;
+	Vector3 color={0,0,0};
 };
 
 #endif /* GAMEOBJECT_H_ */
