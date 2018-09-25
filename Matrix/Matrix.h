@@ -1,14 +1,14 @@
 /*
  * Matrix.h
  *
- *  Created on: 24 de set de 2018
- *      Author: glairtons
+ *  Created on: 25 de set de 2018
+ *      Author: joao
  */
+
 #ifndef MATRIX_H_
 #define MATRIX_H_
-
+#include <string>
 using namespace std;
-
 class Matrix {
 public:
 	/*atributos*/
@@ -50,9 +50,9 @@ public:
 	Matrix transpose();
 
 	/*visualizar*/
-	std::string toString();
+	string toString();
 
 
-}
+};
 
 #endif /* MATRIX_H_ */

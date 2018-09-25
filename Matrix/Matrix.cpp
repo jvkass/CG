@@ -1,5 +1,14 @@
-#include "Matrix.h"
+/*
+ * Matrix.cpp
+ *
+ *  Created on: 25 de set de 2018
+ *      Author: joao
+ */
 
+#include "Matrix.h"
+#include <string>
+#include <sstream>
+using namespace std;;
 Matrix::Matrix(int r, int c)
 {
 	rows = r;
@@ -61,7 +70,7 @@ Matrix Matrix::operator=(Matrix& m)
 	return ma;
 }
 
-Matrix Matriz::operator+(Matrix& m)
+Matrix Matrix::operator+(Matrix& m)
 {
 	if (rows != m.rows || columns != m.columns)
 	{
@@ -74,14 +83,14 @@ Matrix Matriz::operator+(Matrix& m)
 	{
 		for (int j = 0; j < columns; ++j)
 		{
-			ma[i][j] = matrix[i][j] + m[i][j];
+			ma[i][j] = coordinates[i][j] + m[i][j];
 		}
 	}
 
 	return ma;
 }
 
-Matrix Matriz::operator-(Matrix& m)
+Matrix Matrix::operator-(Matrix& m)
 {
 	if (rows != m.rows || columns != m.columns)
 	{
@@ -94,7 +103,7 @@ Matrix Matriz::operator-(Matrix& m)
 	{
 		for (int j = 0; j < columns; ++j)
 		{
-			ma[i][j] = matrix[i][j] - m[i][j];
+			ma[i][j] = coordinates[i][j] - m[i][j];
 		}
 	}
 
@@ -109,7 +118,7 @@ Matrix Matrix::operator*(double d)
 	{
 		for (int j = 0; j < columns; ++j)
 		{
-			ma[i][j] = matrix[i][j] * d;
+			ma[i][j] = coordinates[i][j] * d;
 		}
 	}
 
@@ -169,7 +178,7 @@ Matrix Matrix::transpose()
 	return ma;
 }
 
-std::string Matrix::toString()
+string Matrix::toString()
 {
 	stringstream  s;
 
