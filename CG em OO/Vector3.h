@@ -24,6 +24,7 @@ public:
 	Vector3 operator/(double d);
 	bool operator==(Vector3 v);
 	bool operator!=(Vector3 v);
+	Vector3 arroba(Vector3 v);
 	double Magnitude();
 	double MagnitudeSquared();
 	Vector3 Normalize();

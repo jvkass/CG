@@ -31,7 +31,8 @@ using namespace std;
 #include "Mesh.h"
 #include "Transform.h"
 #include "GameObject.h"
-
+#include "LightSource.h"
+#include "Iluminacao.h"
 
 GLdouble windowWidth  = 800.0;
 GLdouble windowHeight = 600.0;
@@ -46,6 +47,7 @@ GLuint* vao;
 GLuint* vbo;
 GLuint* ibo;
 
+//funcao que detecta se um raio passa por um triangulo
 bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
 {
     float EPSILON = 0.0000001;
@@ -95,6 +97,7 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
 }
 
 // Callback do GLUT: Loop de display
+//ela eh oq vai aparecer na tela
 void _Display(void)
 {
 	// Teste com uma linha
@@ -112,12 +115,13 @@ void _Display(void)
 			double x = (i * 3 - windowWidth/2);
 			double y = (j * 3 - windowHeight/2);
 
+	//bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
+			glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
 
-			glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),0,0.5f);
-
-			glVertex2d(x, y);
+			glVertex2d(x,y);
 		}
 	}
+
 	glEnd();
 
 	/*for(int k = 0; k < 20; ++k)
@@ -251,17 +255,7 @@ int main(int argc, char *argv[])
 	window = glutCreateWindow("CG");
 
 	glewExperimental = GL_TRUE;
-
-	GLenum glewCheck = glewInit();
-
-	if (GLEW_OK != glewCheck)
-	{
-		std::cout << "Erro ao iniciar GLEW";
-	}
-	else
-	{
-		std::cout << "Usando GLEW versao: " << glewGetString(GLEW_VERSION);
-	}
+	glewInit();
 
 
 	// Definição de callbacks
@@ -272,14 +266,14 @@ int main(int argc, char *argv[])
 
 
 	// Definição de cor de fundo,  cor de desenho e espessura da linha de teste
-	glClearColor(1.0, 1.0, 1.0, 0.0);
+	glClearColor(1.0, 1.0, 0.0, 0.0);
 	glColor3f(0.0, 0.0, 0.0);
 	glLineWidth(2.0);
 
 
 	for(int i = 0; i < 20; ++i)
 	{
-		LoadObj("cube.obj", &objeto[i].mesh);
+		LoadObj("sphere.obj", &objeto[i].mesh);
 		
 		objeto[i].color = Vector3{((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX))};
 		
@@ -288,7 +282,8 @@ int main(int argc, char *argv[])
 		objeto[i].transform.rotation = Vector3{(double)(rand() % 360), (double)(rand() % 360), (double)(rand() % 360)};
 
 		objeto[i].transform.position = Vector3{(double)(rand() % (int)windowWidth) - windowWidth/2, (double)(rand() % (int)windowHeight) - windowHeight/2, 0};
-		Matrix m3(4, 4);
+		
+		Matrix m3{4, 4};
 //		cout<<"flag 2"<<endl;
 		m3[0][0] = 1;
 		m3[1][1] = 1;
@@ -326,8 +321,9 @@ int main(int argc, char *argv[])
 		}
 
 	}
+	/*
 
-	/*vao = new GLuint;
+	vao = new GLuint;
 	vbo = new GLuint;
 	ibo = new GLuint;
 
@@ -344,13 +340,13 @@ int main(int argc, char *argv[])
 	double* bufferIndices;
 
 	glBufferData(GL_ARRAY_BUFFER, objeto.mesh.VerticesSize(), bufferVertices, GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, objeto.mesh.FacesSize() , bufferIndices, GL_STATIC_DRAW);*/
-
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, objeto.mesh.FacesSize() , bufferIndices, GL_STATIC_DRAW);
+*/
 
 	// Habilita render de wireframes
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-
+	//glutDisplayFunc(_Display);
 	glutMainLoop();
 
 	exit(0);

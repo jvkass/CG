@@ -14,14 +14,13 @@ using namespace std;
 class Mesh {
 public:
 	string nome;
+	vector<Vector3> textura;
 	vector<Vector3> vertices;
 	vector<Vector3> normaisVertices;
 	vector<vector<vector<unsigned short>>> faces;
 	Mesh();
 	int VerticesSize();
 	int FacesSize();
-
-
 };
 void LoadObj(char* arquivo, Mesh* mesh);
 #endif /* MESH_H_ */

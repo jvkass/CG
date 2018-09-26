@@ -88,6 +88,9 @@ bool Vector3::operator!=(Vector3 v)
 
 		return true;
 	}
+Vector3 Vector3::arroba(Vector3 v){//multiplicacao um por um para calculo das cores
+	return Vector3(this->x * v.x, this->y *v.y, this->z * v.z);
+}
 double Vector3::Magnitude()
 	{
 		return sqrt((x * x) + (y * y) + (z * z));
