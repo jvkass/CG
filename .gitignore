@@ -16,3 +16,8 @@ bld/
 [Ll]og/
 
 *.log
+
+# config project visual studio
+*.sln
+*.vcxproj
+*.vcxproj.*
