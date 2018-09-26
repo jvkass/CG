@@ -251,7 +251,17 @@ int main(int argc, char *argv[])
 	window = glutCreateWindow("CG");
 
 	glewExperimental = GL_TRUE;
-	glewInit();
+
+	GLenum glewCheck = glewInit();
+
+	if (GLEW_OK != glewCheck)
+	{
+		std::cout << "Erro ao iniciar GLEW";
+	}
+	else
+	{
+		std::cout << "Usando GLEW versao: " << glewGetString(GLEW_VERSION);
+	}
 
 
 	// Definição de callbacks
