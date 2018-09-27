@@ -7,15 +7,16 @@
 
 #include "Iluminacao.h"
 #include "LightSource.h"
-using namespace std;
-Iluminacao::Iluminacao(Vector3 observer , Vector3 Point_Object , Vector3 Normal_Of_Face , Vector3 Texture_Object , Light_Source sun , Light_Source post) {
-	// TODO Auto-generated constructor stub
+#include "Texture.h"
+using namespace std;//adicionar as texturas do objeto
+Iluminacao::Iluminacao(Vector3 observer , Vector3 Point_Object , Vector3 Normal_Of_Face , Texture Texture_Object , Light_Source sun , Light_Source post) {
+	
 	Vector3 n=Normal_Of_Face.Normalize();
 
 	Vector3 l=Generate_L_Vector(Point_Object,post);
 	Vector3 v=Generate_V_Vector(Point_Object, observer);
 	Vector3 r=Generate_R_Vector(l,n);
-	Ipix= sun.color.arroba(Texture_Object) + Idif(post , Texture_Object , l ,n) + Iesp(post , Texture_Object , r ,v);
+	Ipix= sun.color.arroba(Texture_Object.texture_amb) + Idif(post , Texture_Object.texture_dif , l ,n) + Iesp(post , Texture_Object.texture_esp , r ,v);
 }
 
 Vector3 Iluminacao::Generate_L_Vector(Vector3 Point_Object, Light_Source post){
