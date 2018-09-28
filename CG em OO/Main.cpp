@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize((int) windowWidth, (int) windowHeight);
 	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)- windowWidth)/2, (glutGet(GLUT_SCREEN_HEIGHT)- windowHeight)/2);
-	window = glutCreateWindow("CG");
+	window = glutCreateWindow("O Melhor de Todos os Desenhos");
 
 	glewExperimental = GL_TRUE;
 	glewInit();
