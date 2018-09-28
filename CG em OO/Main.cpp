@@ -90,13 +90,13 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
     {	
     	//Iluminacao rgb(Vector3 observer , Vector3 Point_Object , Vector3 Normal_Of_Face , Texture Texture_Object , Light_Source sun , Light_Source post)
        //colocando valores teste para o calculo da cor, esses valores devem ser alterados
-        Texture madeira=Texture({0.5,0.5,0.5} , {0.8,0.5,0.5} , {0.5,0.8,0.5});
+        Texture madeira=Texture({0.5f,0.5f,0.5f} , {0.3f,0.3f,0.3f} , {0.3f,0.3f,0.4f});
         
         Light_Source sun=Light_Source({0,0,0},{1,1,1});
-        Light_Source post=Light_Source({1,1,1},{1,1,1});
-        
+        Light_Source post=Light_Source({0,0,0},{1,1,1});
+        Vector3 N=Vector3(edge1[1]*edge2[1] - edge2[1] * edge1[2] , edge1[2] * edge2[0] - edge2[2]*edge1[0] , edge1[0]*edge2[1] - edge2[0]*edge1[1]);
        
-        Iluminacao rgb=Iluminacao({0,0,0} , q , s , madeira , sun , post);
+        Iluminacao rgb=Iluminacao({0,0,0} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
        //observe a minha var aux recebendo a cor para depois eu usar no print
         aux=rgb.Ipix;
         return true;
@@ -129,12 +129,13 @@ void _Display(void)
 	//bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
 			Vector3 aux=Vector3(1,1,1);
 			// a funcao RayIntersectsTriangle vai me dizer se acertou ou n a figura, o aux sera o meu segundo retorno que vai armazenar as cores do Pix
-			if(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}, aux)){
+			if(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,1000,0}, {1000,-1000,0}, aux)){
 				//cada cor sendo colocada no rgb
 				glColor3d(aux[0],aux[1],aux[2]);
 			}else{
 				//cor de fundo
-				glColor3d(0,1,0.10f);
+				
+				glColor3d(0,0,0);
 			}
 
 			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
