@@ -48,7 +48,7 @@ GLuint* vbo;
 GLuint* ibo;
 
 //funcao que detecta se um raio passa por um triangulo
-bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
+bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux)
 {
     float EPSILON = 0.0000001;
 
@@ -87,7 +87,18 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
 	}
 
     if (f * edge2.Dot(q) > EPSILON)
-    {
+    {	
+    	//Iluminacao rgb(Vector3 observer , Vector3 Point_Object , Vector3 Normal_Of_Face , Texture Texture_Object , Light_Source sun , Light_Source post)
+       //colocando valores teste para o calculo da cor, esses valores devem ser alterados
+        Texture madeira=Texture({0.5,0.5,0.5} , {0.8,0.5,0.5} , {0.5,0.8,0.5});
+        
+        Light_Source sun=Light_Source({0,0,0},{1,1,1});
+        Light_Source post=Light_Source({1,1,1},{1,1,1});
+        
+       
+        Iluminacao rgb=Iluminacao({0,0,0} , q , s , madeira , sun , post);
+       //observe a minha var aux recebendo a cor para depois eu usar no print
+        aux=rgb.Ipix;
         return true;
     }
     else
@@ -116,7 +127,17 @@ void _Display(void)
 			double y = (j * 3 - windowHeight/2);
 
 	//bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
-			glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
+			Vector3 aux=Vector3(1,1,1);
+			// a funcao RayIntersectsTriangle vai me dizer se acertou ou n a figura, o aux sera o meu segundo retorno que vai armazenar as cores do Pix
+			if(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}, aux)){
+				//cada cor sendo colocada no rgb
+				glColor3d(aux[0],aux[1],aux[2]);
+			}else{
+				//cor de fundo
+				glColor3d(0,1,0.10f);
+			}
+
+			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
 
 			glVertex2d(x,y);
 		}
