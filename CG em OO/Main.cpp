@@ -109,6 +109,7 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
 
 // Callback do GLUT: Loop de display
 //ela eh oq vai aparecer na tela
+
 void _Display(void)
 {
 	// Teste com uma linha
@@ -147,32 +148,64 @@ void _Display(void)
 
 	glEnd();
 
-	/*for(int k = 0; k < 20; ++k)
-	{
-		glPushMatrix();
-
-		glColor3d(objeto[k].color.x, objeto[k].color.y, objeto[k].color.z);
-		//glRotated(objeto[k].transform.rotation.x, objeto[k].transform.rotation.y, objeto[k].transform.rotation.z, 0.0);
-
-		glBegin(GL_TRIANGLES);
-		for(int i = 0; i < objeto[k].mesh.faces.size(); ++i)
-		{
-			for(int j = 0; j < 3; ++j)
-			{
-				glVertex3d(objeto[k].mesh.vertices[objeto[k].mesh.faces[i][j][0] - 1][0],
-								objeto[k].mesh.vertices[objeto[k].mesh.faces[i][j][0] - 1][1],
-									objeto[k].mesh.vertices[objeto[k].mesh.faces[i][j][0] - 1][2]);
-			}
-		}
-		glEnd();
-
-
-		glPopMatrix();
-	}*/
+	
 
 	glutSwapBuffers();
 }
 
+/*
+void Desenho(GameObject objeto[] , int tamanho_vetor)
+{
+	// Teste com uma linha
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glLoadIdentity();
+
+	glPointSize(3);
+
+	glBegin(GL_POINTS);
+	for(int i = 0; i < windowWidth/3; ++i)
+	{
+		for(int j = 0; j < windowHeight/3; ++j)
+		{
+			double x = (i * 3 - windowWidth/2);
+			double y = (j * 3 - windowHeight/2);
+			for(int k=0 ; k<tamanho_vetor ; k++){
+
+				for(int f=0 ; objeto[k].mesh.FacesSize() ; f++){
+
+					Vector3 aux=Vector3(1,1,1);
+					Vector3 v1 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][2]);
+					Vector3 v2 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][2]);
+					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
+					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux)){
+				//cada cor sendo colocada no rgb
+
+						glColor3d(aux[0],aux[1],aux[2]);
+					}else{
+				//cor de fundo
+				
+						glColor3d(0,0,1);
+					}
+					glVertex2d(x,y);
+				}
+			}
+			
+
+			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
+
+			glVertex2d(x,y);
+		}
+	}
+
+	glEnd();
+
+	
+
+	glutSwapBuffers();
+}
+
+*/
 // Callback do GLUT: Chamado na criação da janela e toda vez que ela for redimensionada
 void _Redimensionar(int w, int h)
 {
@@ -296,7 +329,7 @@ int main(int argc, char *argv[])
 
 	for(int i = 0; i < 20; ++i)
 	{
-		LoadObj("sphere.obj", &objeto[i].mesh);
+		LoadObj("cube.obj", &objeto[i].mesh);
 		
 		objeto[i].color = Vector3{((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX))};
 		
@@ -369,9 +402,12 @@ int main(int argc, char *argv[])
 	// Habilita render de wireframes
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	//glutDisplayFunc(_Display);
+	
+	
+	cout<<objeto[1].mesh.vertices[1][0]<<endl;
+	cout<<objeto[1].mesh.faces[0][1][0]<<endl;
 	glutMainLoop();
-
+	cout<<objeto[1].mesh.faces[0][1][0]<<endl;
 	exit(0);
 }
 
