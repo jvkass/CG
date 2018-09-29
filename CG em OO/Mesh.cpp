@@ -7,6 +7,7 @@
 
 #include "Mesh.h"
 #include "Vector3.h"
+#include "Texture.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
