@@ -386,7 +386,7 @@ int main(int argc, char *argv[])
 	glutReshapeFunc(_Redimensionar);
 	glutKeyboardFunc(_Teclado);
 	glutMotionFunc(_Mouse);
-	//glutDisplayFunc(_Display);
+	glutDisplayFunc(Desenho);
 
 
 	// Definição de cor de fundo,  cor de desenho e espessura da linha de teste
@@ -394,11 +394,13 @@ int main(int argc, char *argv[])
 	glColor3f(0.0, 0.0, 0.0);
 	glLineWidth(2.0);
 
-
+	
+	
 	for(int i = 0; i < 20; ++i)
 	{
 		LoadObj("cube.obj", &objeto[i].mesh);
 		
+		/*
 		objeto[i].color = Vector3{((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX))};
 		
 		objeto[i].transform.scale = Vector3{(double)(rand() % 200), (double)(rand() % 200), (double)(rand() % 200)};
@@ -428,7 +430,8 @@ int main(int argc, char *argv[])
 		m1[0][3] = objeto[i].transform.position.x;
 		m1[1][3] = objeto[i].transform.position.y;
 		m1[2][3] = objeto[i].transform.position.z;
-
+		
+		
 		for(int k = 0; k < objeto[i].mesh.vertices.size(); ++k)
 		{
 			Vector3 v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.x, 'x');
@@ -443,8 +446,9 @@ int main(int argc, char *argv[])
 			objeto[i].mesh.vertices[k].y = v.y;
 			objeto[i].mesh.vertices[k].z = v.z;
 		}
-
+		*/
 	}
+	
 	/*
 
 	vao = new GLuint;
@@ -475,9 +479,8 @@ int main(int argc, char *argv[])
 	//cout<<objeto[1].mesh.vertices[1][0]<<endl;
 	//cout<<objeto[1].mesh.faces[0][1][0]<<endl;
 
-	glutDisplayFunc(Desenho);
+	
 	glutMainLoop();
-	cout<<objeto[1].mesh.faces[0][1][0]<<endl;
 	exit(0);
 }
 
