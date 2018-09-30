@@ -16,6 +16,7 @@ class Mesh {
 public:
 	string nome;
 	Texture textura=Texture({0,0,0},{0,0,0},{0,0,0});
+	int tamanho_faces=0;
 	vector<Vector3> vertices;
 	vector<Vector3> normaisVertices;
 	vector<vector<vector<unsigned short>>> faces;

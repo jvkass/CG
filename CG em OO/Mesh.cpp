@@ -81,6 +81,7 @@ void LoadObj(char* arquivo, Mesh* mesh)
 				sscanf(linhaProcessada.c_str(), "%hi//%hi %hi//%hi %hi//%hi\n", &fac[0][0], &fac[0][1], &fac[1][0], &fac[1][1], &fac[2][0], &fac[2][1]);
 
 				mesh->faces.push_back({fac[0], fac[1], fac[2]});
+				mesh->tamanho_faces=1+mesh->tamanho_faces;
 			}
 
 		}
