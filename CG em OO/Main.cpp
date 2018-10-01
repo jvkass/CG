@@ -42,7 +42,7 @@ int window;
 
 
 GameObject objeto[20];
-int tamanho_vetor=20;
+int tamanho_vetor=1;
 
 GLuint* vao;
 GLuint* vbo;
@@ -91,11 +91,11 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
     {	
     	
        //colocando valores teste para o calculo da cor, esses valores devem ser alterados
-        Texture madeira=Texture({0.3f,0.3f,1.0f} , {0.3f,0.3f,1.0f} , {0.3f,0.3f,1.0f});
+        Texture madeira=Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f});
         
         Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
-        Light_Source post=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
-       
+        Light_Source post=Light_Source({100000.0f,1000000.0f,1000000.0f},{1.0f,1.0f,1.0f});
+        //Vector3 N=Vector3(edge2[1]*edge1[1] - edge1[1] * edge2[2] , edge2[2] * edge1[0] - edge1[2]*edge2[0] , edge2[0]*edge1[1] - edge1[0]*edge2[1]);
        	
         Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
        //observe a minha var aux recebendo a cor para depois eu usar no print
@@ -114,7 +114,7 @@ void Desenho(void)
 {
 	// Teste com uma linha
 	glClear(GL_COLOR_BUFFER_BIT);
-	cout<<"loading..."<<endl;
+
 	glLoadIdentity();
 
 	glPointSize(3);
@@ -159,21 +159,26 @@ void Desenho(void)
 
     						glVertex2d(x,y);
     					
-						
+						//glColor3d(aux[0],aux[1],aux[2]);
 					}else{
-
-						//n faz nd :)
-
+				//cor de fundo
 						
+
+						//glColor3d(0,0,1);
 					}
-					
+					//glVertex2d(x,y);
 				}
 
-				
+				//glVertex2d(x,y);
 			}
+			
+
+			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
+
+			//glVertex2d(x,y);
 		}
 	}
-	cout<<"finish ;-)"<<endl;
+
 	glEnd();
 
 	
@@ -225,7 +230,7 @@ int main(int argc, char *argv[])
 {
 	srand(time(NULL));
 
-	
+
 
 	// Inicialização do GLUT e janela
 	glutInit(&argc, argv);
@@ -266,6 +271,7 @@ int main(int argc, char *argv[])
 		objeto[i].transform.position = Vector3{(double)(rand() % (int)windowWidth) - windowWidth/2, (double)(rand() % (int)windowHeight) - windowHeight/2, 0};
 		
 		Matrix m3{4, 4};
+//		cout<<"flag 2"<<endl;
 		m3[0][0] = 1;
 		m3[1][1] = 1;
 		m3[2][2] = 1;
@@ -304,7 +310,37 @@ int main(int argc, char *argv[])
 		
 	}
 	
+	/*
+
+	vao = new GLuint;
+	vbo = new GLuint;
+	ibo = new GLuint;
+
+	glGenVertexArrays(1, vao);
+	glGenBuffers(1, vbo);
+	glGenBuffers(1, ibo);
+	glBindVertexArray(*vao);
+	glBindBuffer(GL_ARRAY_BUFFER, *vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibo);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 0, 0);
+
+	double* bufferVertices;
+	double* bufferIndices;
+
+	glBufferData(GL_ARRAY_BUFFER, objeto.mesh.VerticesSize(), bufferVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, objeto.mesh.FacesSize() , bufferIndices, GL_STATIC_DRAW);
+*/
+
+	// Habilita render de wireframes
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	
+	
+	//cout<<objeto[1].mesh.vertices[1][0]<<endl;
+	//cout<<objeto[1].mesh.faces[0][1][0]<<endl;
+
+	cout<<GL_UNSIGNED_BYTE<<endl;
 	glutMainLoop();
 	exit(0);
 }
