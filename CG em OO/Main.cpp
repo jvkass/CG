@@ -49,7 +49,7 @@ GLuint* vbo;
 GLuint* ibo;
 
 //funcao que detecta se um raio passa por um triangulo
-bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux)
+bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux )
 {
     float EPSILON = 0.0000001;
 
@@ -96,7 +96,7 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
         Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
         Light_Source post=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
         Vector3 N=Vector3(edge1[1]*edge2[1] - edge2[1] * edge1[2] , edge1[2] * edge2[0] - edge2[2]*edge1[0] , edge1[0]*edge2[1] - edge2[0]*edge1[1]);
-       
+       	
         Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
        //observe a minha var aux recebendo a cor para depois eu usar no print
         aux=rgb.Ipix;
@@ -155,7 +155,7 @@ void _Display(void)
 }
 
 */
-/*
+
 void Desenho(void)
 {
 	// Teste com uma linha
@@ -165,7 +165,19 @@ void Desenho(void)
 
 	glPointSize(3);
 
+
 	glBegin(GL_POINTS);
+	for(int i = 0; i < windowWidth/3; ++i){
+		for(int j = 0; j < windowHeight/3; ++j){
+			double x = (i * 3 - windowWidth/2);
+			double y = (j * 3 - windowHeight/2);
+
+			glColor3d(0,0,0);
+			glVertex2d(x,y);
+		}
+	}
+	
+	
 	for(int i = 0; i < windowWidth/3; ++i)
 	{
 		for(int j = 0; j < windowHeight/3; ++j)
@@ -187,10 +199,77 @@ void Desenho(void)
 					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
 					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux)){
 				//cada cor sendo colocada no rgb
+						unsigned char pixel[4];
+    					glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+    					
+    					if(252==(int)pixel[0] and 127==(int)pixel[1] and 0==(int)pixel[2] ){
+    						glColor3d(aux[0],aux[1],aux[2]);
+    						glVertex2d(x,y);
+    					}
+						//glColor3d(aux[0],aux[1],aux[2]);
+					}else{
+				//cor de fundo
+						
+
+						//glColor3d(0,0,1);
+					}
+					//glVertex2d(x,y);
+				}
+
+				//glVertex2d(x,y);
+			}
+			
+
+			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
+
+			//glVertex2d(x,y);
+		}
+	}
+
+	glEnd();
+
+	
+
+	glutSwapBuffers();
+	
+}
+
+/*
+void Desenho(void)
+{
+	// Teste com uma linha
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	
+
+	glPointSize(3);
+
+	glBegin(GL_POINTS);
+	for(int k=0 ; k<tamanho_vetor ; k++)
+	{
+		for(int f=0 ; f < objeto[k].mesh.tamanho_faces ; f++)
+		{
+			
+			for(int i = 0; i < windowWidth/3; ++i){
+
+				for(int j = 0; j < windowHeight/3; ++j){
+					double x = (i * 3 - windowWidth/2);
+					double y = (j * 3 - windowHeight/2);
+
+					Vector3 aux=Vector3(1,1,1);
+					
+					Vector3 v1 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][2]);
+					
+					Vector3 v2 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][2]);
+					
+					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
+					
+					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux)){
+						//cada cor sendo colocada no rgb
 
 						glColor3d(aux[0],aux[1],aux[2]);
 					}else{
-				//cor de fundo
+						//cor de fundo
 				
 						glColor3d(0,0,1);
 					}
@@ -215,66 +294,6 @@ void Desenho(void)
 	
 }
 */
-void Desenho(void)
-{
-	// Teste com uma linha
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glLoadIdentity();
-
-	glPointSize(3);
-
-	glBegin(GL_POINTS);
-	for(int k=0 ; k<tamanho_vetor ; k++)
-	{
-		for(int f=0 ; f < objeto[k].mesh.tamanho_faces ; f++)
-		{
-			
-			for(int i = 0; i < windowWidth/3; ++i){
-
-				for(int j = 0; j < windowHeight/3; ++j){
-					double x = (i * 3 - windowWidth/2);
-					double y = (j * 3 - windowHeight/2);
-
-					Vector3 aux=Vector3(1,1,1);
-					
-					
-					
-					Vector3 v1 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][2]);
-					
-					Vector3 v2 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][2]);
-					
-					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
-					
-					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux)){
-				//cada cor sendo colocada no rgb
-
-						glColor3d(aux[0],aux[1],aux[2]);
-					}else{
-				//cor de fundo
-				
-						glColor3d(1,1,1);
-					}
-					glVertex2d(x,y);
-				}
-
-				//glVertex2d(x,y);
-			}
-			
-
-			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
-
-			//glVertex2d(x,y);
-		}
-	}
-
-	glEnd();
-
-	
-
-	glutSwapBuffers();
-	
-}
 // Callback do GLUT: Chamado na criação da janela e toda vez que ela for redimensionada
 void _Redimensionar(int w, int h)
 {
@@ -419,8 +438,8 @@ int main(int argc, char *argv[])
 
 		Matrix m2{4, 4};
 		m2[0][0] = objeto[i].transform.scale.x;
-		m2[1][1] = objeto[i].transform.scale.x;
-		m2[2][2] = objeto[i].transform.scale.x;
+		m2[1][1] = objeto[i].transform.scale.y;
+		m2[2][2] = objeto[i].transform.scale.z;
 		m2[3][3] = 1;
 
 		Matrix m1{4, 4};
@@ -480,7 +499,7 @@ int main(int argc, char *argv[])
 	//cout<<objeto[1].mesh.vertices[1][0]<<endl;
 	//cout<<objeto[1].mesh.faces[0][1][0]<<endl;
 
-	cout<<objeto[0].mesh.vertices[7][0]<<endl;
+	cout<<GL_UNSIGNED_BYTE<<endl;
 	glutMainLoop();
 	exit(0);
 }
