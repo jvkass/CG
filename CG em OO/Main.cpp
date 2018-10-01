@@ -42,7 +42,7 @@ int window;
 
 
 GameObject objeto[20];
-int tamanho_vetor=1;
+int tamanho_vetor=20;
 
 GLuint* vao;
 GLuint* vbo;
@@ -89,13 +89,13 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
 
     if (f * edge2.Dot(q) > EPSILON)
     {	
-    	//Iluminacao rgb(Vector3 observer , Vector3 Point_Object , Vector3 Normal_Of_Face , Texture Texture_Object , Light_Source sun , Light_Source post)
+    	
        //colocando valores teste para o calculo da cor, esses valores devem ser alterados
         Texture madeira=Texture({0.3f,0.3f,1.0f} , {0.3f,0.3f,1.0f} , {0.3f,0.3f,1.0f});
         
         Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
         Light_Source post=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
-        //Vector3 N=Vector3(edge1[1]*edge2[1] - edge2[1] * edge1[2] , edge1[2] * edge2[0] - edge2[2]*edge1[0] , edge1[0]*edge2[1] - edge2[0]*edge1[1]);
+       
        	
         Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
        //observe a minha var aux recebendo a cor para depois eu usar no print
@@ -108,59 +108,13 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
 	}
 }
 
-// Callback do GLUT: Loop de display
-//ela eh oq vai aparecer na tela
-/*
-void _Display(void)
-{
-	// Teste com uma linha
-	glClear(GL_COLOR_BUFFER_BIT);
 
-	glLoadIdentity();
-
-	glPointSize(3);
-
-	glBegin(GL_POINTS);
-	for(int i = 0; i < windowWidth/3; ++i)
-	{
-		for(int j = 0; j < windowHeight/3; ++j)
-		{
-			double x = (i * 3 - windowWidth/2);
-			double y = (j * 3 - windowHeight/2);
-
-	//bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
-			Vector3 aux=Vector3(1,1,1);
-			// a funcao RayIntersectsTriangle vai me dizer se acertou ou n a figura, o aux sera o meu segundo retorno que vai armazenar as cores do Pix
-			if(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,1000,0}, {1000,-1000,0}, aux)){
-				//cada cor sendo colocada no rgb
-
-				glColor3d(aux[0],aux[1],aux[2]);
-			}else{
-				//cor de fundo
-				
-				glColor3d(0,0,1);
-			}
-
-			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
-
-			glVertex2d(x,y);
-		}
-	}
-
-	glEnd();
-
-	
-
-	glutSwapBuffers();
-}
-
-*/
 
 void Desenho(void)
 {
 	// Teste com uma linha
 	glClear(GL_COLOR_BUFFER_BIT);
-
+	cout<<"loading..."<<endl;
 	glLoadIdentity();
 
 	glPointSize(3);
@@ -205,86 +159,21 @@ void Desenho(void)
 
     						glVertex2d(x,y);
     					
-						//glColor3d(aux[0],aux[1],aux[2]);
-					}else{
-				//cor de fundo
 						
-
-						//glColor3d(0,0,1);
-					}
-					//glVertex2d(x,y);
-				}
-
-				//glVertex2d(x,y);
-			}
-			
-
-			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
-
-			//glVertex2d(x,y);
-		}
-	}
-
-	glEnd();
-
-	
-
-	glutSwapBuffers();
-	
-}
-
-/*
-void Desenho(void)
-{
-	// Teste com uma linha
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	
-
-	glPointSize(3);
-
-	glBegin(GL_POINTS);
-	for(int k=0 ; k<tamanho_vetor ; k++)
-	{
-		for(int f=0 ; f < objeto[k].mesh.tamanho_faces ; f++)
-		{
-			
-			for(int i = 0; i < windowWidth/3; ++i){
-
-				for(int j = 0; j < windowHeight/3; ++j){
-					double x = (i * 3 - windowWidth/2);
-					double y = (j * 3 - windowHeight/2);
-
-					Vector3 aux=Vector3(1,1,1);
-					
-					Vector3 v1 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][2]);
-					
-					Vector3 v2 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][2]);
-					
-					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
-					
-					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux)){
-						//cada cor sendo colocada no rgb
-
-						glColor3d(aux[0],aux[1],aux[2]);
 					}else{
-						//cor de fundo
-				
-						glColor3d(0,0,1);
+
+						//n faz nd :)
+
+						
 					}
-					glVertex2d(x,y);
+					
 				}
 
-				//glVertex2d(x,y);
+				
 			}
-			
-
-			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
-
-			//glVertex2d(x,y);
 		}
 	}
-
+	cout<<"finish ;-)"<<endl;
 	glEnd();
 
 	
@@ -292,7 +181,8 @@ void Desenho(void)
 	glutSwapBuffers();
 	
 }
-*/
+
+
 // Callback do GLUT: Chamado na criação da janela e toda vez que ela for redimensionada
 void _Redimensionar(int w, int h)
 {
@@ -335,60 +225,7 @@ int main(int argc, char *argv[])
 {
 	srand(time(NULL));
 
-	//Testes Vector3
-	/*Vector3 teste1(0,0,0);
-	Vector3 teste2(1,1,1);
-	Vector3 teste3(3,4,-10);
-	Vector3 teste4(12,-2,-3);
-	Vector3 teste5(0.5f,0.5f,0.5f);
-
-	Vector3 plano[3] = {Vector3(0,0,0),Vector3(0,1,0),Vector3(0,1,1)};
-
-	cout << teste2.Magnitude() << endl;
-	cout << teste2.MagnitudeSquared() << endl;
-	cout << teste2.Normalize().toString() << endl;
-	cout << (teste2 + teste3).toString() << endl;
-	cout << (teste2 - teste3).toString() << endl;
-	cout << (teste2 * 2).toString() << endl;
-	cout << (teste2 / 2).toString() << endl;
-	cout << (teste2 == teste2) << endl;
-	cout << (teste2 == teste1) << endl;
-	cout << (teste2 == teste3) << endl;
-	cout << (teste2 != teste4) << endl;
-	cout << teste2.Dot(teste3) << endl;
-	cout << teste2.Cross(teste3).toString() << endl;
-	cout << teste2.Angle(teste3) << endl;
-	cout << teste5.Reflect(&plano[0]).toString() << endl;
-
-
-	//Testes Matrix
-	Matrix m1(4, 4);
-	m1[0][0] = 0;
-	m1[0][1] = 1;
-	m1[0][2] = 1;
-	m1[2][2] = 1;
-
-	Matrix m2(4, 4);
-	m2[0][0] = 2;
-	m2[1][0] = 2;
-	m2[2][0] = 2;
-	m2[3][0] = 2;
-
-	Matrix m3(4, 2);
-	m3[0][1] = 1;
-	m3[3][0] = 1;
-
-	Vector3 v1(3,7,5);
-
-	cout << (m1 + m2).toString() << endl;
-	cout << (m2 - m1).toString() << endl;
-	cout << (m1	* 2).toString() << endl;
-	cout << (m1 / 2).toString() << endl;
-	cout << m3.toString() << endl;
-	cout << m3.Transpose().toString() << endl;
-	cout << (m1 * m2).toString() << endl;
-	cout << (m1 * v1).toString() << endl;*/
-
+	
 
 	// Inicialização do GLUT e janela
 	glutInit(&argc, argv);
@@ -429,7 +266,6 @@ int main(int argc, char *argv[])
 		objeto[i].transform.position = Vector3{(double)(rand() % (int)windowWidth) - windowWidth/2, (double)(rand() % (int)windowHeight) - windowHeight/2, 0};
 		
 		Matrix m3{4, 4};
-//		cout<<"flag 2"<<endl;
 		m3[0][0] = 1;
 		m3[1][1] = 1;
 		m3[2][2] = 1;
@@ -468,37 +304,7 @@ int main(int argc, char *argv[])
 		
 	}
 	
-	/*
-
-	vao = new GLuint;
-	vbo = new GLuint;
-	ibo = new GLuint;
-
-	glGenVertexArrays(1, vao);
-	glGenBuffers(1, vbo);
-	glGenBuffers(1, ibo);
-	glBindVertexArray(*vao);
-	glBindBuffer(GL_ARRAY_BUFFER, *vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibo);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 0, 0);
-
-	double* bufferVertices;
-	double* bufferIndices;
-
-	glBufferData(GL_ARRAY_BUFFER, objeto.mesh.VerticesSize(), bufferVertices, GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, objeto.mesh.FacesSize() , bufferIndices, GL_STATIC_DRAW);
-*/
-
-	// Habilita render de wireframes
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 	
-	
-	//cout<<objeto[1].mesh.vertices[1][0]<<endl;
-	//cout<<objeto[1].mesh.faces[0][1][0]<<endl;
-
-	cout<<GL_UNSIGNED_BYTE<<endl;
 	glutMainLoop();
 	exit(0);
 }
