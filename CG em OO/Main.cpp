@@ -42,14 +42,14 @@ int window;
 
 
 GameObject objeto[20];
-int tamanho_vetor=20;
+int tamanho_vetor=1;
 
 GLuint* vao;
 GLuint* vbo;
 GLuint* ibo;
 
 //funcao que detecta se um raio passa por um triangulo
-bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux )
+bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux , Vector3 N)
 {
     float EPSILON = 0.0000001;
 
@@ -95,7 +95,7 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
         
         Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
         Light_Source post=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
-        Vector3 N=Vector3(edge1[1]*edge2[1] - edge2[1] * edge1[2] , edge1[2] * edge2[0] - edge2[2]*edge1[0] , edge1[0]*edge2[1] - edge2[0]*edge1[1]);
+        //Vector3 N=Vector3(edge1[1]*edge2[1] - edge2[1] * edge1[2] , edge1[2] * edge2[0] - edge2[2]*edge1[0] , edge1[0]*edge2[1] - edge2[0]*edge1[1]);
        	
         Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
        //observe a minha var aux recebendo a cor para depois eu usar no print
@@ -197,7 +197,8 @@ void Desenho(void)
 					Vector3 v2 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][2]);
 					
 					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
-					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux)){
+					Vector3 N = objeto[k].mesh.normaisVertices[ objeto[k].mesh.faces[f][0][1] -1  ];
+					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux,N)){
 				//cada cor sendo colocada no rgb
 						
     						glColor3d(aux[0],aux[1],aux[2]);
