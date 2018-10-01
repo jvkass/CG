@@ -199,13 +199,11 @@ void Desenho(void)
 					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
 					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux)){
 				//cada cor sendo colocada no rgb
-						unsigned char pixel[4];
-    					glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
-    					
-    					if(252==(int)pixel[0] and 127==(int)pixel[1] and 0==(int)pixel[2] ){
+						
     						glColor3d(aux[0],aux[1],aux[2]);
+
     						glVertex2d(x,y);
-    					}
+    					
 						//glColor3d(aux[0],aux[1],aux[2]);
 					}else{
 				//cor de fundo
