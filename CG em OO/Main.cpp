@@ -33,6 +33,7 @@ using namespace std;
 #include "GameObject.h"
 #include "LightSource.h"
 #include "Iluminacao.h"
+#include "Sphere.h"
 
 GLdouble windowWidth  = 800.0;
 GLdouble windowHeight = 600.0;
@@ -48,6 +49,40 @@ GLuint* vao;
 GLuint* vbo;
 GLuint* ibo;
 
+
+bool RayIntersectsSphere(Vector3 raydir,  Vector3 rayorig, Vector3 pos,float rad , Vector3 &aux)
+{
+float a = raydir.Dot(raydir);
+float b = raydir .Dot( ( ( rayorig - pos)*2.0f));
+float c = pos.Dot(pos) + rayorig.Dot(rayorig) -2.0f*rayorig.Dot(pos) - rad*rad;
+float D = b*b + (-4.0f)*a*c;
+
+// If ray can not intersect then stop
+if (D < 0)
+        return false;
+D=sqrtf(D);
+
+// Ray can intersect the sphere, solve the closer hitpoint
+float t = (-0.5f)*(b+D)/a;
+if (t > 0.0f)
+        {
+        float distance=sqrtf(a)*t;
+       Vector3 hitpoint=rayorig + raydir*t;
+        Vector3 normal=(hitpoint - pos) / rad;
+		Texture madeira=Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f});
+        
+        Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
+        Light_Source post=Light_Source({100000.0f,1000000.0f,1000000.0f},{1.0f,1.0f,1.0f});
+        Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , hitpoint , normal , madeira , sun , post);
+       //observe a minha var aux recebendo a cor para depois eu usar no print
+        aux=rgb.Ipix;   
+
+        }
+else
+        return false;
+
+return true;
+}
 //funcao que detecta se um raio passa por um triangulo
 bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux , Vector3 N)
 {
@@ -142,7 +177,7 @@ void Desenho(void)
 
 				for(int f=0 ; f < objeto[k].mesh.tamanho_faces ; f++){
 
-					Vector3 aux=Vector3(1,1,1);
+					Vector3 aux=Vector3(1.0f,1.0f,1.0f);
 					
 					
 					
@@ -152,9 +187,9 @@ void Desenho(void)
 					
 					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
 					Vector3 N = objeto[k].mesh.normaisVertices[ objeto[k].mesh.faces[f][0][1] -1  ];
-					if(RayIntersectsTriangle({0,0,-1}, {x,y, 1},v1,v2,v3,aux,N)){
-				//cada cor sendo colocada no rgb
-						
+					if(RayIntersectsSphere({x,y,1}, {0.0f,0.0f,-1.0f},{100.0f,100.0f,100.0f},100.0f,aux)){
+					//cada cor sendo colocada no rgb
+							
     						glColor3d(aux[0],aux[1],aux[2]);
 
     						glVertex2d(x,y);
@@ -259,7 +294,7 @@ int main(int argc, char *argv[])
 	
 	for(int i = 0; i < 20; ++i)
 	{
-		LoadObj("cube.obj", &objeto[i].mesh);
+		LoadObj("sphere.obj", &objeto[i].mesh);
 		
 		
 		objeto[i].color = Vector3{((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX))};
@@ -292,9 +327,10 @@ int main(int argc, char *argv[])
 		m1[1][3] = objeto[i].transform.position.y;
 		m1[2][3] = objeto[i].transform.position.z;
 		
-		
+		/*
 		for(int k = 0; k < objeto[i].mesh.vertices.size(); ++k)
 		{
+			//Vector3 v={0,0,0};
 			Vector3 v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.x, 'x');
 			v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.y, 'y');
 			v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.z, 'z');
@@ -307,15 +343,13 @@ int main(int argc, char *argv[])
 			objeto[i].mesh.vertices[k].y = v.y;
 			objeto[i].mesh.vertices[k].z = v.z;
 		}
-		
+		*/
 	}
 	
 	/*
-
 	vao = new GLuint;
 	vbo = new GLuint;
 	ibo = new GLuint;
-
 	glGenVertexArrays(1, vao);
 	glGenBuffers(1, vbo);
 	glGenBuffers(1, ibo);
@@ -324,10 +358,8 @@ int main(int argc, char *argv[])
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ibo);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 0, 0);
-
 	double* bufferVertices;
 	double* bufferIndices;
-
 	glBufferData(GL_ARRAY_BUFFER, objeto.mesh.VerticesSize(), bufferVertices, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, objeto.mesh.FacesSize() , bufferIndices, GL_STATIC_DRAW);
 */
@@ -344,6 +376,3 @@ int main(int argc, char *argv[])
 	glutMainLoop();
 	exit(0);
 }
-
-
-
