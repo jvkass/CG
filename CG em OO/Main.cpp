@@ -33,7 +33,6 @@ using namespace std;
 #include "GameObject.h"
 #include "LightSource.h"
 #include "Iluminacao.h"
-#include "Sphere.h"
 
 GLdouble windowWidth  = 800.0;
 GLdouble windowHeight = 600.0;
@@ -43,7 +42,7 @@ int window;
 
 
 GameObject objeto[20];
-int tamanho_vetor=1;
+int tamanho_vetor=9;
 
 GLuint* vao;
 GLuint* vbo;
@@ -84,7 +83,7 @@ else
 return true;
 }
 //funcao que detecta se um raio passa por um triangulo
-bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux , Vector3 N)
+bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux , Vector3 N, Texture T, Vector3& out)
 {
     float EPSILON = 0.0000001;
 
@@ -123,18 +122,17 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
 	}
 
     if (f * edge2.Dot(q) > EPSILON)
-    {	
-    	
-       //colocando valores teste para o calculo da cor, esses valores devem ser alterados
-        Texture madeira=Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f});
+    {
         
-        Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
+        Light_Source sun=Light_Source({10.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
         Light_Source post=Light_Source({100000.0f,1000000.0f,1000000.0f},{1.0f,1.0f,1.0f});
         //Vector3 N=Vector3(edge2[1]*edge1[1] - edge1[1] * edge2[2] , edge2[2] * edge1[0] - edge1[2]*edge2[0] , edge2[0]*edge1[1] - edge1[0]*edge2[1]);
        	
-        Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
+        Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , T , sun , post);
        //observe a minha var aux recebendo a cor para depois eu usar no print
         aux=rgb.Ipix;
+		
+		out = rayOrigin + rayVector * f; 
         return true;
     }
     else
@@ -166,53 +164,66 @@ void Desenho(void)
 		}
 	}
 	
-	
-	for(int i = 0; i < windowWidth/3; ++i)
-	{
-		for(int j = 0; j < windowHeight/3; ++j)
-		{
-			double x = (i * 3 - windowWidth/2);
-			double y = (j * 3 - windowHeight/2);
-			for(int k=0 ; k<tamanho_vetor ; k++){
+	for(int k=0 ; k<tamanho_vetor ; k++){
 
-				for(int f=0 ; f < objeto[k].mesh.tamanho_faces ; f++){
+		for(int f=0 ; f < objeto[k].mesh.tamanho_faces ; f++){
 
-					Vector3 aux=Vector3(1.0f,1.0f,1.0f);
-					
-					
-					
-					Vector3 v1 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][2]);
-					
-					Vector3 v2 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][2]);
-					
-					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
-					Vector3 N = objeto[k].mesh.normaisVertices[ objeto[k].mesh.faces[f][0][1] -1  ];
-					if(RayIntersectsSphere({x,y,1}, {0.0f,0.0f,-1.0f},{100.0f,100.0f,100.0f},100.0f,aux)){
-					//cada cor sendo colocada no rgb
-							
-    						glColor3d(aux[0],aux[1],aux[2]);
+			if(objeto[k].mesh.normaisVertices[ objeto[k].mesh.faces[f][0][1] -1 ].z > 0)
+			{
+				continue;
+			}
 
-    						glVertex2d(x,y);
-    					
-						//glColor3d(aux[0],aux[1],aux[2]);
-					}else{
-				//cor de fundo
+			for(int i = 0; i < windowWidth/3; ++i)
+			{
+				for(int j = 0; j < windowHeight/3; ++j)
+				{
+					double x = (i * 3 - windowWidth/2);
+					double y = (j * 3 - windowHeight/2);
+					
+					
+						Vector3 aux=Vector3(1.0f,1.0f,1.0f);
+						Vector3 aux2=Vector3(0,0,0);
 						
+						
+						
+						Vector3 v1 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][2]);
+						
+						Vector3 v2 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][2]);
+						
+						Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
+						Vector3 N = objeto[k].mesh.normaisVertices[ objeto[k].mesh.faces[f][0][1] -1  ];
+						
+						if(RayIntersectsTriangle({x,y,-1}, {x,y, 1},v1,v2,v3,aux,N, objeto[k].texture, aux2)){
+						//cada cor sendo colocada no rgb
+								
+								glColor3d(aux[0],aux[1],aux[2]);
 
-						//glColor3d(0,0,1);
-					}
+								glVertex3d(x,y, aux2.z);
+							
+							//glColor3d(aux[0],aux[1],aux[2]);
+						}else{
+					//cor de fundo
+							
+
+							//glColor3d(0,0,1);
+						}
+						//glVertex2d(x,y);
+									
+
+					
+
+					//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
+
 					//glVertex2d(x,y);
 				}
-
-				//glVertex2d(x,y);
 			}
-			
 
-			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
-
-			//glVertex2d(x,y);
+		//glVertex2d(x,y);
 		}
+	
 	}
+	
+
 
 	glEnd();
 
@@ -292,25 +303,57 @@ int main(int argc, char *argv[])
 
 	
 	
+
 	for(int i = 0; i < 20; ++i)
 	{
-		LoadObj("sphere.obj", &objeto[i].mesh);
+		LoadObj("cube.obj", &objeto[i].mesh);
 		
-		
-		objeto[i].color = Vector3{((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX)), ((double) rand() / (RAND_MAX))};
-		
-		objeto[i].transform.scale = Vector3{(double)(rand() % 200), (double)(rand() % 200), (double)(rand() % 200)};
-		
-		objeto[i].transform.rotation = Vector3{(double)(rand() % 360), (double)(rand() % 360), (double)(rand() % 360)};
-
-		objeto[i].transform.position = Vector3{(double)(rand() % (int)windowWidth) - windowWidth/2, (double)(rand() % (int)windowHeight) - windowHeight/2, 0};
-		
-		Matrix m3{4, 4};
-//		cout<<"flag 2"<<endl;
-		m3[0][0] = 1;
-		m3[1][1] = 1;
-		m3[2][2] = 1;
-		m3[3][3] = 1;
+		switch(i)
+		{
+			case 0:
+				objeto[i].transform.scale = Vector3{1, 1, 1};
+				objeto[i].transform.position = Vector3{-100, -200, 0};
+			break;
+			case 1:
+				objeto[i].transform.scale = Vector3{0.8, 0.8, 0.8};
+				objeto[i].transform.position = Vector3{-80, 0, 0};
+			break;
+			case 2:
+				objeto[i].transform.scale = Vector3{0.2, 0.2, 0.2};
+				objeto[i].transform.position = Vector3{-20, -140, 0};
+				objeto[i].texture = Texture(Vector3{0.2f,0.2f,0.2f} , Vector3{0.5f,0.5f,0.5f} , Vector3{0.5f,0.5f,0.5f});
+			break;
+			case 3:
+				objeto[i].transform.scale = Vector3{0.2, 0.2, 0.2};
+				objeto[i].transform.position = Vector3{-20, -80, 0};
+				objeto[i].texture = Texture(Vector3{0.2f,0.2f,0.2f} , Vector3{0.5f,0.5f,0.5f} , Vector3{0.5f,0.5f,0.5f});
+			break;
+			case 4:
+				objeto[i].transform.scale = Vector3{0.1, 0.1, 0.1};
+				objeto[i].transform.position = Vector3{-40, 100, 0};
+				objeto[i].texture = Texture(Vector3{0.2f,0.2f,0.2f} , Vector3{0.5f,0.5f,0.5f} , Vector3{0.5f,0.5f,0.5f});
+			break;
+			case 5:
+				objeto[i].transform.scale = Vector3{0.1, 0.1, 0.1};
+				objeto[i].transform.position = Vector3{40, 100, 0};
+				objeto[i].texture = Texture(Vector3{0.2f,0.2f,0.2f} , Vector3{0.5f,0.5f,0.5f} , Vector3{0.5f,0.5f,0.5f});
+			break;
+			case 6:
+				objeto[i].transform.scale = Vector3{0.1, 0.1, 0.1};
+				objeto[i].transform.position = Vector3{-10, 60, 0};
+				objeto[i].texture = Texture(Vector3{0.2f,0.2f,0.2f} , Vector3{0.5f,0.5f,0.5f} , Vector3{0.5f,0.5f,0.5f});
+			break;
+			case 7:
+				objeto[i].transform.scale = Vector3{1, 0.1, 0.4};
+				objeto[i].transform.position = Vector3{-100, 140, 0};
+				objeto[i].texture = Texture(Vector3{0.3f,0.2f,0.1f} , Vector3{0.5f,0.4f,0.3f} , Vector3{0.5f,0.4f,0.3f});
+			break;
+			case 8:
+				objeto[i].transform.scale = Vector3{0.8, 0.3, 0.4};
+				objeto[i].transform.position = Vector3{-80, 150, 0};
+				objeto[i].texture = Texture(Vector3{0.3f,0.2f,0.1f} , Vector3{0.5f,0.4f,0.3f} , Vector3{0.5f,0.4f,0.3f});
+			break;
+		}
 
 		Matrix m2{4, 4};
 		m2[0][0] = objeto[i].transform.scale.x;
@@ -327,23 +370,19 @@ int main(int argc, char *argv[])
 		m1[1][3] = objeto[i].transform.position.y;
 		m1[2][3] = objeto[i].transform.position.z;
 		
-		/*
+		
 		for(int k = 0; k < objeto[i].mesh.vertices.size(); ++k)
 		{
-			//Vector3 v={0,0,0};
-			Vector3 v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.x, 'x');
-			v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.y, 'y');
-			v = m3.Rotate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]), objeto[i].transform.rotation.z, 'z');
+			Vector3 v = {0,0,0};
 
-			v = m2.Scale(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]));
-
-			v = m1.Translate(Vector3(objeto[i].mesh.vertices[k][0], objeto[i].mesh.vertices[k][1], objeto[i].mesh.vertices[k][2]));
+			v = m2.Scale(objeto[i].mesh.vertices[k]);
+			v = m1.Translate(v);
 
 			objeto[i].mesh.vertices[k].x = v.x;
 			objeto[i].mesh.vertices[k].y = v.y;
 			objeto[i].mesh.vertices[k].z = v.z;
 		}
-		*/
+		
 	}
 	
 	/*

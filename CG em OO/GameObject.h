@@ -10,12 +10,13 @@
 #include "Mesh.h"
 #include "Transform.h"
 #include "Vector3.h"
+#include "Texture.h"
 class GameObject {
 public:
 	//GameObject();
 	Mesh mesh;
 	Transform transform;
-	Vector3 color={0,0,0};
+	Texture texture = Texture(Vector3{0.6f,0.6f,0.9f} , Vector3{0.9f,0.9f,0.9f} , Vector3{0.9f,0.9f,0.9f});
 };
 
 #endif /* GAMEOBJECT_H_ */
