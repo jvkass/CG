@@ -17,7 +17,7 @@ Iluminacao::Iluminacao(Vector3 observer , Vector3 Point_Object , Vector3 Normal_
 	Vector3 l=Generate_L_Vector(Point_Object,post);
 	Vector3 v=Generate_V_Vector(Point_Object, observer);
 	Vector3 r=Generate_R_Vector(l,n);
-	Ipix= sun.color.arroba(Texture_Object.texture_amb) + Idif(post , Texture_Object.texture_dif , l ,n) + Iesp(post , Texture_Object.texture_esp , r ,v,100);
+	Ipix= sun.color.arroba(Texture_Object.texture_amb) + Idif(post , Texture_Object.texture_dif , l ,n) + Iesp(post , Texture_Object.texture_esp , r ,v,10061);
 }
 
 Vector3 Iluminacao::Generate_L_Vector(Vector3 Point_Object, Light_Source post){

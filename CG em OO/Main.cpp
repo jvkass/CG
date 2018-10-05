@@ -161,7 +161,7 @@ void Desenho(void)
 			double x = (i * 3 - windowWidth/2);
 			double y = (j * 3 - windowHeight/2);
 
-			glColor3d(0,0,0);
+			glColor3d(0.5,0.5,0.5);
 			glVertex2d(x,y);
 		}
 	}
