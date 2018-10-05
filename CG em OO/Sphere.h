@@ -9,12 +9,15 @@
 #define SPHERE_H_
 #include "Vector3.h"
 #include "GameObject.h"
+#include "Texture.h"
+#include "LightSource.h"
 class Sphere: public GameObject {
 public:
-	Sphere(Vector3 centro , double raio);
+	Sphere(Vector3 centro , double raio , Texture textura);
 	Vector3 centro={0,0,0};
 	double raio;
-	bool RayIntersects(Vector3 raydir,  Vector3 rayorig, Vector3 pos,float rad , Vector3 &aux)
+	Texture textura=Texture({0,0,0},{0,0,0},{0,0,0});
+	bool RayIntersects(Vector3 raydir,  Vector3 rayorig, Vector3 &aux , Vector3 observer , Light_Source sun , Light_Source post);
 	
 };
 

@@ -33,7 +33,7 @@ using namespace std;
 #include "GameObject.h"
 #include "LightSource.h"
 #include "Iluminacao.h"
-//#include "Sphere.h"
+#include "Sphere.h"
 
 GLdouble windowWidth  = 800.0;
 GLdouble windowHeight = 600.0;
@@ -50,39 +50,7 @@ GLuint* vbo;
 GLuint* ibo;
 
 
-bool RayIntersectsSphere(Vector3 raydir,  Vector3 rayorig, Vector3 pos,float rad , Vector3 &aux)
-{
-float a = raydir.Dot(raydir);
-float b = raydir .Dot( ( ( rayorig - pos)*2.0f));
-float c = pos.Dot(pos) + rayorig.Dot(rayorig) -2.0f*rayorig.Dot(pos) - rad*rad;
-float D = b*b + (-4.0f)*a*c;
 
-// If ray can not intersect then stop
-if (D < 0)
-        return false;
-D=sqrtf(D);
-
-// Ray can intersect the sphere, solve the closer hitpoint
-float t = (-0.5f)*(b+D)/a;
-if (t > 0.0f)
-        {
-        float distance=sqrtf(a)*t;
-       Vector3 hitpoint=rayorig + raydir*t;
-        Vector3 normal=(hitpoint - pos) / rad;
-		Texture madeira=Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f});
-        
-        Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
-        Light_Source post=Light_Source({100000.0f,1000000.0f,1000000.0f},{1.0f,1.0f,1.0f});
-        Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , hitpoint , normal , madeira , sun , post);
-       //observe a minha var aux recebendo a cor para depois eu usar no print
-        aux=rgb.Ipix;   
-
-        }
-else
-        return false;
-
-return true;
-}
 //funcao que detecta se um raio passa por um triangulo
 bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux , Vector3 N)
 {
@@ -129,7 +97,7 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
         Texture madeira=Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f});
         
         Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
-        Light_Source post=Light_Source({100000.0f,1000000.0f,1000000.0f},{1.0f,1.0f,1.0f});
+        Light_Source post=Light_Source({100.0f,100.0f,100.0f},{1.0f,1.0f,1.0f});
         //Vector3 N=Vector3(edge2[1]*edge1[1] - edge1[1] * edge2[2] , edge2[2] * edge1[0] - edge1[2]*edge2[0] , edge2[0]*edge1[1] - edge1[0]*edge2[1]);
        	
         Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
@@ -147,6 +115,7 @@ bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0
 
 void Desenho(void)
 {
+	cout<<"Fazendo imagem"<<endl;
 	// Teste com uma linha
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -166,7 +135,9 @@ void Desenho(void)
 		}
 	}
 	
-	
+	Sphere ovo=Sphere({0.0f,26.0f,-40.0f}, 23.0f , Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f}));
+	Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
+    Light_Source post=Light_Source({100.0f,100.0f,100.0f},{1.0f,1.0f,1.0f});
 	for(int i = 0; i < windowWidth/3; ++i)
 	{
 		for(int j = 0; j < windowHeight/3; ++j)
@@ -180,40 +151,34 @@ void Desenho(void)
 					Vector3 aux=Vector3(1.0f,1.0f,1.0f);
 					
 					
-					
+					/*
 					Vector3 v1 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][0][0] -1 ][2]);
 					
 					Vector3 v2 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][1][0] -1 ][2]);
 					
 					Vector3 v3 = Vector3(objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][0], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][1], objeto[k].mesh.vertices[ objeto[k].mesh.faces[f][2][0] -1 ][2]);
 					Vector3 N = objeto[k].mesh.normaisVertices[ objeto[k].mesh.faces[f][0][1] -1  ];
-					if(RayIntersectsSphere({x,y,-90}, {0.0f,0.0f,-1.0f},{0.0f,26.0f,-40.0f},23.0f,aux)){
+					*/
+					//Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
+        			//Light_Source post=Light_Source({100000.0f,1000000.0f,1000000.0f},{1.0f,1.0f,1.0f});
+        			//Sphere ovo=Sphere({0.0f,26.0f,-40.0f}, 23.0f , Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f}));
+					Vector3 observer={0.0f,0.0f,90};
+					Vector3 point={x,y,0};
+					if(ovo.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
+					//if(RayIntersectsSphere({x,y,-90}, {0.0f,0.0f,-1.0f},{0.0f,26.0f,-40.0f},23.0f,aux)){
 					//cada cor sendo colocada no rgb
 							
     						glColor3d(aux[0],aux[1],aux[2]);
 
     						glVertex2d(x,y);
     					
-						//glColor3d(aux[0],aux[1],aux[2]);
-					}else{
-				//cor de fundo
-						
-
-						//glColor3d(0,0,1);
+					
 					}
-					//glVertex2d(x,y);
 				}
-
-				//glVertex2d(x,y);
 			}
-			
-
-			//glColor3d(RayIntersectsTriangle({0,0,-1}, {x,y, 1}, {-100,-100,0}, {0,100,0}, {100,-100,0}),1,0.10f);
-
-			//glVertex2d(x,y);
 		}
 	}
-
+	cout<<"Fim"<<endl;
 	glEnd();
 
 	
@@ -306,7 +271,7 @@ int main(int argc, char *argv[])
 		objeto[i].transform.position = Vector3{(double)(rand() % (int)windowWidth) - windowWidth/2, (double)(rand() % (int)windowHeight) - windowHeight/2, 0};
 		
 		Matrix m3{4, 4};
-//		cout<<"flag 2"<<endl;
+      //		cout<<"flag 2"<<endl;
 		m3[0][0] = 1;
 		m3[1][1] = 1;
 		m3[2][2] = 1;
@@ -345,7 +310,10 @@ int main(int argc, char *argv[])
 		}
 		*/
 	}
-	
+
+
+
+	//ovo=Sphere({0.0f,26.0f,-40.0f}, 23.0f , Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f}));
 	/*
 	vao = new GLuint;
 	vbo = new GLuint;
@@ -362,7 +330,7 @@ int main(int argc, char *argv[])
 	double* bufferIndices;
 	glBufferData(GL_ARRAY_BUFFER, objeto.mesh.VerticesSize(), bufferVertices, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, objeto.mesh.FacesSize() , bufferIndices, GL_STATIC_DRAW);
-*/
+    */
 
 	// Habilita render de wireframes
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -372,7 +340,7 @@ int main(int argc, char *argv[])
 	//cout<<objeto[1].mesh.vertices[1][0]<<endl;
 	//cout<<objeto[1].mesh.faces[0][1][0]<<endl;
 
-	cout<<GL_UNSIGNED_BYTE<<endl;
+	//cout<<GL_UNSIGNED_BYTE<<endl;
 	glutMainLoop();
 	exit(0);
 }
