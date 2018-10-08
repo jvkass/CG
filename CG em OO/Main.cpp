@@ -136,12 +136,12 @@ void Desenho(void)
 	}
 	
 	Sphere ovo=Sphere({0.0f,0.0f,-40.0f}, 23.0f , Texture({1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f}));
-	Sphere ovo2=Sphere({0.0f,45.0f,-50.0f}, 10.0f , Texture({1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f}));
-	Sphere olhoESQ=Sphere({5.0f,45.0f,-50.0f}, 1.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f}));
-	Sphere olhoDIR=Sphere({-5.0f,45.0f,-50.0f}, 1.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f}));
-	Sphere bot1=Sphere({0.0f,0.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
-	Sphere bot2=Sphere({0.0f,10.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
-	Sphere bot3=Sphere({0.0f,20.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
+	Sphere ovo2=Sphere({0.0f,45.0f,-50.0f}, 15.0f , Texture({1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f}));
+	Sphere olhoESQ=Sphere({5.0f,50.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f}));
+	Sphere olhoDIR=Sphere({-5.0f,50.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f}));
+	Sphere bot1=Sphere({0.0f,5.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
+	Sphere bot2=Sphere({0.0f,15.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
+	Sphere bot3=Sphere({0.0f,25.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
 
 
 
@@ -171,7 +171,7 @@ void Desenho(void)
 					//Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
         			//Light_Source post=Light_Source({100000.0f,1000000.0f,1000000.0f},{1.0f,1.0f,1.0f});
         			//Sphere ovo=Sphere({0.0f,26.0f,-40.0f}, 23.0f , Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f}));
-					Vector3 observer={0.0f,0.0f,90};
+					Vector3 observer={0.0f,0.0f,100};
 					Vector3 point={x,y,0};
 					if(ovo.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
 					//cada cor sendo colocada no rgb
