@@ -54,60 +54,60 @@ GLuint* ibo;
 //funcao que detecta se um raio passa por um triangulo
 bool RayIntersectsTriangle(Vector3 rayOrigin, Vector3 rayVector, Vector3 vertex0, Vector3 vertex1, Vector3 vertex2 , Vector3 &aux , Vector3 N)
 {
-    float EPSILON = 0.0000001;
+	float EPSILON = 0.0000001;
 
-    Vector3 edge1(0,0,0);
-    Vector3 edge2(0,0,0);
-    Vector3 h(0,0,0);
-    Vector3 s(0,0,0);
-    Vector3 q(0,0,0);
-    float a,f,u,v;
+	Vector3 edge1(0,0,0);
+	Vector3 edge2(0,0,0);
+	Vector3 h(0,0,0);
+	Vector3 s(0,0,0);
+	Vector3 q(0,0,0);
+	float a,f,u,v;
 
-    edge1 = vertex1 - vertex0;
-    edge2 = vertex2 - vertex0;
-    h = rayVector.Cross(edge2);
-    a = edge1.Dot(h);
+	edge1 = vertex1 - vertex0;
+	edge2 = vertex2 - vertex0;
+	h = rayVector.Cross(edge2);
+	a = edge1.Dot(h);
 
-    if (a > -EPSILON && a < EPSILON)
+	if (a > -EPSILON && a < EPSILON)
 	{
-        return false;
+		return false;
 	}
 
-    f = 1/a;
-    s = rayOrigin - vertex0;
-    u = f * (s.Dot(h));
+	f = 1/a;
+	s = rayOrigin - vertex0;
+	u = f * (s.Dot(h));
 
-    if (u < 0.0 || u > 1.0)
+	if (u < 0.0 || u > 1.0)
 	{
-        return false;
+		return false;
 	}
 
-    q = s.Cross(edge1);
-    v = f * rayVector.Dot(q);
+	q = s.Cross(edge1);
+	v = f * rayVector.Dot(q);
 
-    if (v < 0.0 || u + v > 1.0)
+	if (v < 0.0 || u + v > 1.0)
 	{
-        return false;
+		return false;
 	}
 
-    if (f * edge2.Dot(q) > EPSILON)
-    {	
-    	
+	if (f * edge2.Dot(q) > EPSILON)
+	{	
+
        //colocando valores teste para o calculo da cor, esses valores devem ser alterados
-        Texture madeira=Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f});
-        
-        Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
-        Light_Source post=Light_Source({100.0f,100.0f,100.0f},{1.0f,1.0f,1.0f});
+		Texture madeira=Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f});
+
+		Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
+		Light_Source post=Light_Source({100.0f,100.0f,100.0f},{1.0f,1.0f,1.0f});
         //Vector3 N=Vector3(edge2[1]*edge1[1] - edge1[1] * edge2[2] , edge2[2] * edge1[0] - edge1[2]*edge2[0] , edge2[0]*edge1[1] - edge1[0]*edge2[1]);
-       	
-        Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
+
+		Iluminacao rgb=Iluminacao({0.0f,0.0f,0.0f} , rayOrigin+rayVector*f*edge2.Dot(q) , N , madeira , sun , post);
        //observe a minha var aux recebendo a cor para depois eu usar no print
-        aux=rgb.Ipix;
-        return true;
-    }
-    else
+		aux=rgb.Ipix;
+		return true;
+	}
+	else
 	{
-        return false;
+		return false;
 	}
 }
 
@@ -135,9 +135,18 @@ void Desenho(void)
 		}
 	}
 	
-	Sphere ovo=Sphere({0.0f,26.0f,-40.0f}, 23.0f , Texture({0.3f,0.3f,0.9f} , {0.3f,0.6f,0.9f} , {0.3f,0.6f,0.9f}));
+	Sphere ovo=Sphere({0.0f,0.0f,-40.0f}, 23.0f , Texture({1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f}));
+	Sphere ovo2=Sphere({0.0f,45.0f,-50.0f}, 10.0f , Texture({1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f} , {1.0f,1.0f,1.0f}));
+	Sphere olhoESQ=Sphere({5.0f,45.0f,-50.0f}, 1.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f}));
+	Sphere olhoDIR=Sphere({-5.0f,45.0f,-50.0f}, 1.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f} , {0.0f,0.0f,0.0f}));
+	Sphere bot1=Sphere({0.0f,0.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
+	Sphere bot2=Sphere({0.0f,10.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
+	Sphere bot3=Sphere({0.0f,20.0f,-50.0f}, 3.0f , Texture({0.0f,0.0f,0.0f} , {0.0f,0.0f,0.f} , {0.0f,0.0f,0.f}));
+
+
+
 	Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
-    Light_Source post=Light_Source({100.0f,100.0f,100.0f},{1.0f,1.0f,1.0f});
+	Light_Source post=Light_Source({100.0f,100.0f,100.0f},{1.0f,1.0f,1.0f});
 	for(int i = 0; i < windowWidth/3; ++i)
 	{
 		for(int j = 0; j < windowHeight/3; ++j)
@@ -165,14 +174,67 @@ void Desenho(void)
 					Vector3 observer={0.0f,0.0f,90};
 					Vector3 point={x,y,0};
 					if(ovo.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
-					//if(RayIntersectsSphere({x,y,-90}, {0.0f,0.0f,-1.0f},{0.0f,26.0f,-40.0f},23.0f,aux)){
 					//cada cor sendo colocada no rgb
-							
-    						glColor3d(aux[0],aux[1],aux[2]);
 
-    						glVertex2d(x,y);
-    					
-					
+						glColor3d(aux[0],aux[1],aux[2]);
+
+						glVertex2d(x,y);
+
+
+					}
+					if(ovo2.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
+					//cada cor sendo colocada no rgb
+
+						glColor3d(aux[0],aux[1],aux[2]);
+
+						glVertex2d(x,y);
+
+
+					}
+					if(olhoDIR.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
+					//cada cor sendo colocada no rgb
+
+						glColor3d(aux[0],aux[1],aux[2]);
+
+						glVertex2d(x,y);
+
+
+					}
+					if(olhoESQ.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
+					//cada cor sendo colocada no rgb
+
+						glColor3d(aux[0],aux[1],aux[2]);
+
+						glVertex2d(x,y);
+
+
+					}
+					if(bot1.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
+					//cada cor sendo colocada no rgb
+
+						glColor3d(aux[0],aux[1],aux[2]);
+
+						glVertex2d(x,y);
+
+
+					}
+					if(bot3.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
+					//cada cor sendo colocada no rgb
+
+						glColor3d(aux[0],aux[1],aux[2]);
+
+						glVertex2d(x,y);
+
+
+					}
+					if(bot2.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post)){
+					//cada cor sendo colocada no rgb
+
+						glColor3d(aux[0],aux[1],aux[2]);
+
+						glVertex2d(x,y);
+
+
 					}
 				}
 			}
@@ -212,9 +274,9 @@ void _Teclado(unsigned char key, int x, int y)
 	{
 		// ESC
 		case 27:
-			glutDestroyWindow(window);
-			exit(0);
-			break;
+		glutDestroyWindow(window);
+		exit(0);
+		break;
 	}
 
 	glutPostRedisplay();
