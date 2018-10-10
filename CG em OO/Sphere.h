@@ -17,7 +17,7 @@ public:
 	Vector3 centro={0,0,0};
 	double raio;
 	Texture textura=Texture({0,0,0},{0,0,0},{0,0,0});
-	bool RayIntersects(Vector3 raydir,  Vector3 rayorig, Vector3 &aux , Vector3 observer , Light_Source sun , Light_Source post);
+	bool RayIntersects(Vector3 raydir,  Vector3 rayorig, Vector3 &aux , Vector3 observer , Light_Source sun , Light_Source post ,float *distance);
 	
 };
 

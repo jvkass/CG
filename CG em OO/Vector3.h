@@ -16,6 +16,7 @@ public:
 	double z;
 	double l;
 	Vector3(double x, double y , double z);
+	Vector3();
 	double& operator[](int id);
 	Vector3 operator=(Vector3 v);
 	Vector3 operator+(Vector3 v);

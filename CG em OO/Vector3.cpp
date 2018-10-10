@@ -32,6 +32,12 @@ Vector3::Vector3(double x, double y, double z) {
 
 }
 
+Vector3::Vector3(){
+	this->x=0;
+	this->y=0;
+	this->z=0;
+}
+
 double& Vector3::operator [](int id){
 	switch(id){
 		case 0:
