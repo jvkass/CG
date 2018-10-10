@@ -8,7 +8,7 @@ Sphere::Sphere(Vector3 centro , double raio , Texture textura){
 	this->textura=textura;
 }
 
-bool Sphere::RayIntersects(Vector3 raydir,  Vector3 rayorig, Vector3 &aux , Vector3 observer , Light_Source sun , Light_Source post , float &distance)
+bool Sphere::RayIntersects(Vector3 raydir,  Vector3 rayorig, Vector3 &aux , Vector3 observer , Light_Source sun , Light_Source post , float *icaro)
 {
 float a = raydir.Dot(raydir);
 float b = raydir .Dot( ( ( rayorig - this->centro)*2.0f));
@@ -22,8 +22,7 @@ D=sqrtf(D);
 
 // Ray can intersect the sphere, solve the closer hitpoint
 float t = (-0.5f)*(b+D)/a;
-if (t > 0.0f)
-        {
+if (t >= 0.0f){
         float distance=sqrtf(a)*t;
         Vector3 hitpoint=rayorig + raydir*t;
         Vector3 normal=(hitpoint - this->centro) / this->raio;
@@ -32,7 +31,7 @@ if (t > 0.0f)
         Iluminacao rgb=Iluminacao(observer , hitpoint , normal , this->textura , sun , post);
        
         aux=rgb.Ipix;   
-        distance=t;
+        *icaro=t;
 
         }
 else

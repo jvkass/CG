@@ -132,26 +132,25 @@ void Desenho(void)
 			double x = (i  - windowWidth/2);
 			double y = (j  - windowHeight/2);
 
-			glColor3d(0.9,0.9,0.9);
+			glColor3d(0.2,0.2,0.5);
 			glVertex2d(x,y);
 		}
 	}
 	Sphere barriga=Sphere({0.0f,-96.0f,300.0f}, 160.0f , Texture({0.5f,0.5f,0.5f} , {0.3f,0.3f,0.3f} , {0.3f,0.3f,0.3f}));
+	
 	Sphere cabeca=Sphere({0.0f,150.0f,300.0f}, 100.0f , Texture({0.5f,0.5f,0.5f} , {0.3f,0.3f,0.3f} , {0.3f,0.3f,0.3f}));
-	Sphere olho_direito=Sphere({-50.0f,170.0f,200.0f}, 150.0f , Texture({0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f}));
-	Sphere olho_esquerdo=Sphere({50.0f,170.0f,300.0f}, 15.0f , Texture({0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f}));
-	Sphere nariz=Sphere({0.0f,130.0f,300.0f}, 15.0f , Texture({0.9f,0.2f,0.2f} , {0.9f,0.2f,0.2f} , {0.9f,0.2f,0.2f}));
 	
-	Sphere b1=Sphere({0.0f,0.0f,300.0f}, 15.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
-	Sphere b2=Sphere({0.0f,-60.0f,300.0f}, 15.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
-	Sphere b3=Sphere({0.0f,-120.0f,300.0f}, 15.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
-	Sphere b4=Sphere({0.0f,-180.0f,300.0f}, 15.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
+	Sphere olho_direito=Sphere({-20.0f,100.0f,150.0f}, 8.0f , Texture({0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f}));
 	
-
-
-
-
-
+	Sphere olho_esquerdo=Sphere({20.0f,100.0f,150.0f}, 8.0f , Texture({0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f}));
+	
+	Sphere nariz=Sphere({0.0f,80.0f,150.0f}, 8.0f , Texture({0.9f,0.2f,0.2f} , {0.9f,0.2f,0.2f} , {0.9f,0.2f,0.2f}));
+	
+	Sphere b1=Sphere({0.0f,0.0f,150.0f}, 8.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
+	Sphere b2=Sphere({0.0f,-30.0f,150.0f}, 8.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
+	Sphere b3=Sphere({0.0f,-50.0f,125.0f}, 6.5f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
+	Sphere b4=Sphere({0.0f,-80.0f,125.0f}, 6.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
+	
 	Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
     Light_Source post=Light_Source({100.0f,100.0f,100.0f},{0.9f,0.9f,0.9f});
 	for(int i = 0; i < windowWidth; ++i)
@@ -164,17 +163,18 @@ void Desenho(void)
 			Vector3 aux=Vector3(1.0f,1.0f,1.0f);
 					
 					
-			Vector3 observer={0.0f,0.0f,-130};
+			Vector3 observer={0.0f,0.0f,-150};
 			Vector3 point={x,y,0};
 
 			float t=-1.0f;
 
 			float distancias[9];
 
-			Vector3 cores[10];
+			Vector3 cores[9];
 
 			int pos=0;
-			if(cabeca.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post , t)){
+
+			if(cabeca.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post , &t)){
 				//cada cor sendo colocada no rgb							
     			
 				distancias[pos]=t;
@@ -185,50 +185,50 @@ void Desenho(void)
 
     			//glVertex2d(x,y);
 			}
-			if(barriga.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,t)){
+			if(barriga.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,&t)){
 					
    				distancias[pos]=t;
 				cores[pos]=aux;
 				pos=pos+1;
 			}
 
-			if(olho_direito.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post ,t)){
+			if(olho_direito.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post ,&t)){
 					
    				distancias[pos]=t;
 				cores[pos]=aux;
 				pos=pos+1;
 			}
-			if(olho_esquerdo.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,t)){
+			if(olho_esquerdo.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,&t)){
 					
    				distancias[pos]=t;
 				cores[pos]=aux;
 				pos=pos+1;
 			}
-			if(nariz.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,t)){
+			if(nariz.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,&t)){
 					
    				distancias[pos]=t;
 				cores[pos]=aux;
 				pos=pos+1;
 			}
-			if(b1.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,t)){
+			if(b1.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,&t)){
 					
    				distancias[pos]=t;
 				cores[pos]=aux;
 				pos=pos+1;
 			}
-			if(b2.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,t)){
+			if(b2.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,&t)){
 					
    				distancias[pos]=t;
 				cores[pos]=aux;
 				pos=pos+1;
 			}
-			if(b3.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,t)){
+			if(b3.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,&t)){
 					
    				distancias[pos]=t;
 				cores[pos]=aux;
 				pos=pos+1;
 			}
-			if(b4.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,t)){
+			if(b4.RayIntersects(point - observer , {0.0f,0.0f,-1.0f} , aux , observer , sun , post,&t)){
 					
    				distancias[pos]=t;
 				cores[pos]=aux;
@@ -238,9 +238,10 @@ void Desenho(void)
 			//laco para descobrir o menor t
 			if(pos != 0){
 				int menor=0;
-				for(int k=1 ; k<pos ; k++){
-					if(distancias[menor]>distancias[k])
+				for(int k=0 ; k<pos ; k++){
+					if(distancias[menor]>distancias[k]){
 						menor=k;
+					}
 				}
 				glColor3d(cores[menor][0],cores[menor][1],cores[menor][2]);
 				
