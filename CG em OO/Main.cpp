@@ -36,6 +36,54 @@ GLuint* vbo;
 GLuint* ibo;
 
 
+void Mundo_Camera(Vector3 camera , Vector3 LoockAt , Vector3 ViewUp , Vector3 &ponto){
+	Vector3 Kc;
+	Vector3 Ic;
+	Vector3 Jc;
+	Vector3 aux;
+
+	Kc=(LoockAt-camera).Normalize();
+	
+	aux=ViewUp-LoockAt;
+
+	Ic=(Kc.Cross(aux)).Normalize();
+
+	Jc= (Ic.Cross(Kc)).Normalize();
+	
+	float MundoParaCamera[4][4];
+
+	MundoParaCamera[0][0] = Ic[0];
+	MundoParaCamera[0][1] = Ic[1];
+	MundoParaCamera[0][2] = Ic[2];
+	MundoParaCamera[0][3] = -Ic.Dot(camera);
+
+	MundoParaCamera[1][0] = Jc[0];
+	MundoParaCamera[1][1] = Jc[1];
+	MundoParaCamera[1][2] = Jc[2];
+	MundoParaCamera[1][3] = -Jc.Dot(camera);
+
+	MundoParaCamera[2][0] = Kc[0];
+	MundoParaCamera[2][1] = Kc[1];
+	MundoParaCamera[2][2] = Kc[2];
+	MundoParaCamera[2][3] = -Kc.Dot(camera);
+
+	MundoParaCamera[3][0] = 0;
+	MundoParaCamera[3][1] = 0;
+	MundoParaCamera[3][2] = 0;
+	MundoParaCamera[3][3] = 1;
+
+	aux[0] = MundoParaCamera[0][0] * ponto[0] + MundoParaCamera[0][1] * ponto[1] + MundoParaCamera[0][2] * ponto[2] + MundoParaCamera[0][3];
+
+	aux[1] = MundoParaCamera[1][0] * ponto[0] + MundoParaCamera[1][1] * ponto[1] + MundoParaCamera[1][2] * ponto[2] + MundoParaCamera[1][3];
+
+	aux[2] = MundoParaCamera[2][0] * ponto[0] + MundoParaCamera[2][1] * ponto[1] + MundoParaCamera[2][2] * ponto[2] + MundoParaCamera[2][3];
+	
+	for (int i = 0; i < 3; i++){
+ 		ponto[i] = aux[i];
+	}	
+
+}
+
 void Desenho(void)
 {
 	cout<<"Fazendo imagem"<<endl;
@@ -86,9 +134,17 @@ void Desenho(void)
 	Light_Source sun=Light_Source({0.0f,0.0f,0.0f},{1.0f,1.0f,1.0f});
     Light_Source post=Light_Source({100.0f,100.0f,100.0f},{0.9f,0.9f,0.9f});
 
-	//observador
-	Vector3 observer={0.0f,0.0f,-150};
+	//onde esta a camera , para onde olha e a orientaçao
+	Vector3 camera={0.0f,0.0f,-100};
+	Vector3 LoockAt={0.0f,-96.0f,300.0f};
+	Vector3 ViewUp= {0.0f,150.0f,300.0f};
 	
+	for(int k=0;k<9;k++){
+		Mundo_Camera(camera,LoockAt,ViewUp,Snow_Man[k].centro);
+			
+	}
+
+	Vector3 observer={0,0,0};
 	for(int i = 0; i < windowWidth; ++i)
 	{
 		for(int j = 0; j < windowHeight; ++j)
@@ -103,8 +159,8 @@ void Desenho(void)
 			float t=-1.0f;
 			int pos=0;
 
-			//vetor que liga o observador a tela		
-			Vector3 point={x,y,0};
+			//vetor que liga o observador a tela (x,y,d)		
+			Vector3 point={x,y,150};
 
 			//vetores que serao percorridos para achar seus menores valores
 			float distancias[100];
