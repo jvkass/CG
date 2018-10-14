@@ -7,7 +7,11 @@ Sphere::Sphere(Vector3 centro , double raio , Texture textura){
 	this->raio=raio;
 	this->textura=textura;
 }
-
+Sphere::Sphere(){
+        this->centro={0,0,0};
+        this->raio=0.0f;
+        this->textura=Texture({0,0,0},{0,0,0},{0,0,0});
+}
 bool Sphere::RayIntersects(Vector3 raydir,  Vector3 rayorig, Vector3 &aux , Vector3 observer , Light_Source sun , Light_Source post , float *icaro)
 {
 float a = raydir.Dot(raydir);
