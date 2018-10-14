@@ -14,6 +14,7 @@
 class Sphere: public GameObject {
 public:
 	Sphere(Vector3 centro , double raio , Texture textura);
+	Sphere();
 	Vector3 centro={0,0,0};
 	double raio;
 	Texture textura=Texture({0,0,0},{0,0,0},{0,0,0});
