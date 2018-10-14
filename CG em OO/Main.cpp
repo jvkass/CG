@@ -109,16 +109,16 @@ void Desenho(void)
 	
 		Sphere cabeca=Sphere({0.0f,150.0f,300.0f}, 100.0f , Texture({0.5f,0.5f,0.5f} , {0.3f,0.3f,0.3f} , {0.3f,0.3f,0.3f}));
 	
-		Sphere olho_direito=Sphere({-20.0f,100.0f,150.0f}, 8.0f , Texture({0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f}));
+		Sphere olho_direito=Sphere({-20.0f,150.0f,200.0f}, 8.0f , Texture({0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f}));
 	
-		Sphere olho_esquerdo=Sphere({20.0f,100.0f,150.0f}, 8.0f , Texture({0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f}));
+		Sphere olho_esquerdo=Sphere({20.0f,150.0f,200.0f}, 8.0f , Texture({0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f} , {0.2f,0.2f,0.2f}));
 	
-		Sphere nariz=Sphere({0.0f,80.0f,150.0f}, 8.0f , Texture({0.9f,0.2f,0.2f} , {0.9f,0.2f,0.2f} , {0.9f,0.2f,0.2f}));
+		Sphere nariz=Sphere({0.0f,120.0f,200.0f}, 8.0f , Texture({0.9f,0.2f,0.2f} , {0.9f,0.2f,0.2f} , {0.9f,0.2f,0.2f}));
 	
-		Sphere b1=Sphere({0.0f,0.0f,150.0f}, 8.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
+		Sphere b1=Sphere({0.0f,0.0f,170.0f}, 8.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
 		Sphere b2=Sphere({0.0f,-30.0f,150.0f}, 8.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
-		Sphere b3=Sphere({0.0f,-50.0f,125.0f}, 6.5f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
-		Sphere b4=Sphere({0.0f,-80.0f,125.0f}, 6.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
+		Sphere b3=Sphere({0.0f,-60.0f,140.0f}, 6.5f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
+		Sphere b4=Sphere({0.0f,-90.0f,137.0f}, 6.0f , Texture({0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f} , {0.2f,0.9f,0.2f}));
 	
 		Snow_Man[0]=cabeca;
 		Snow_Man[1]=barriga;
